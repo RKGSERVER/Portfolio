@@ -1,4 +1,4 @@
-.about { background: var(--bg2); }
+.about { background: var(--bg2); overflow: visible; }
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
@@ -207,10 +207,17 @@
 
 /* ── ABOUT MOBILE ── */
 @media (max-width: 480px) {
-  .about-grid { grid-template-columns: 1fr; gap: 40px; }
-  .avatar-wrap { width: 280px; height: 280px; }
+  .about-grid { grid-template-columns: 1fr; gap: 60px; }
+  /* make wrap big enough so chips don't get clipped */
+  .avatar-wrap { width: 340px; height: 340px; }
   .avatar-hex { width: 200px; height: 200px; }
-  .floating-chips { display: none; }
+  .about-visual { overflow: visible; }
+  .floating-chips { overflow: visible; }
+  .chip { font-size: 0.78rem; padding: 7px 12px; gap: 5px; }
+  .c1 { top: 20px;  left: -10px; }
+  .c2 { top: 20px;  right: -10px; }
+  .c3 { bottom: 20px; left: -10px; }
+  .c4 { bottom: 20px; right: -10px; }
   .about-para { font-size: 0.98rem; }
   .about-stats { gap: 20px; }
   .stat-num { font-size: 2.6rem; }
