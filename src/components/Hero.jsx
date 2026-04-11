@@ -80,15 +80,12 @@ export default function Hero() {
     const run = () => {
       const isMobile = window.innerWidth <= 480
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
-      // only animate tag on mobile where it's visible
-      if (isMobile && tagRef.current) {
-        tl.fromTo(tagRef.current,
+      tl.fromTo(tagRef.current,
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.8 })
-      }
-      tl.fromTo(line1.current,
+        .fromTo(line1.current,
           { y: '110%', opacity: 0 },
-          { y: '0%', opacity: 1, duration: 1 }, isMobile ? '-=0.4' : '0')
+          { y: '0%', opacity: 1, duration: 1 }, '-=0.4')
         .fromTo(line2.current,
           { y: '110%', opacity: 0 },
           { y: '0%', opacity: 1, duration: 1 }, '-=0.7')
