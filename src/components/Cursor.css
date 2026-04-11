@@ -14,11 +14,12 @@
 }
 .c-ring {
   width: 38px; height: 38px;
-  border: 1px solid rgba(255,60,0,0.5);
+  border: 1px solid rgba(255,60,0,0.4);
   border-radius: 50%;
   position: fixed; top: 0; left: 0;
   pointer-events: none; z-index: 10000;
   transform: translate(-50%, -50%);
+  /* no mix-blend-mode — prevents bleeding onto text */
 }
 .c-text {
   position: fixed; top: 0; left: 0;

@@ -20,6 +20,8 @@
   color: var(--accent);
   letter-spacing: 0.08em;
   cursor: pointer;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 .nav-links {
   list-style: none;
