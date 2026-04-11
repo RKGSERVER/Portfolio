@@ -94,7 +94,6 @@ export default function About() {
           <p className="about-para anim">I'm a <span className="highlight">BCA 3rd year student</span> and <span className="highlight">Certified Digital Marketer</span> — two worlds that most people keep separate, but I live both at once.</p>
           <p className="about-para anim">In <span className="highlight">tech</span>, I build web applications and write clean code across C, C++, Java, Python and JavaScript. I love turning ideas into real products that people actually use.</p>
           <p className="about-para anim">In <span className="highlight">digital marketing</span>, I understand how brands grow online — SEO, social media strategy, content creation, audience targeting and online branding. I don't just build products, I know how to get them seen.</p>
-          <p className="about-para anim">In <span className="highlight">esports</span>, I compete at a high level — fast decision-making, team coordination, strategic thinking under pressure. Gaming taught me discipline and the mindset to never stop improving.</p>
           <p className="about-para anim">And through it all, I write <span className="highlight">music lyrics</span> — storytelling is the thread that connects everything I do. <span className="highlight">Watch this space.</span></p>
           <div className="about-stats anim">
             <div className="stat">
