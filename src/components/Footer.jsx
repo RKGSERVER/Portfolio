@@ -19,7 +19,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-marquee" aria-hidden="true">
         <div className="footer-track">
-          {[0, 1].map(copy => (
+          {[0, 1, 2, 3].map(copy => (
             <span key={copy} style={{ display: 'contents' }}>
               <span className="fw">STAY</span>
               <span className="fsep">·</span>

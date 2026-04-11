@@ -47,7 +47,7 @@
 
 @keyframes footerMarquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-25%); }
 }
 
 /* ── Footer bottom ────────────────────────────────────────────────────────── */
@@ -116,8 +116,11 @@
 
 /* ── FOOTER MOBILE ── */
 @media (max-width: 480px) {
-  .footer-track { font-size: clamp(2.8rem, 12vw, 5rem); }
-  .footer-track .fw { padding: 16px 20px; }
+  .footer-track {
+    font-size: clamp(2rem, 8vw, 3rem);
+    animation-duration: 12s;
+  }
+  .footer-track .fw { padding: 14px 16px; }
   .footer-bottom { flex-direction: column; align-items: center; text-align: center; padding: 24px 4%; gap: 16px; }
   .footer-logo { font-size: 1.5rem; }
   .footer-bottom p { font-size: 0.85rem; }
