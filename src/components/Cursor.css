@@ -34,8 +34,10 @@
 }
 .c-text.show { opacity: 1; }
 
-/* hide custom cursor on touch devices */
+/* hide custom cursor on touch devices — JS handles touch cursor instead */
 @media (hover: none) and (pointer: coarse) {
-  .c-dot, .c-ring, .c-text { display: none; }
+  .c-dot  { display: none; }  /* JS will re-show these */
+  .c-ring { display: none; }
+  .c-text { display: none; }
   body { cursor: auto; }
 }
