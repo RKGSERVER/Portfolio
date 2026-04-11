@@ -33,9 +33,7 @@
   padding-top: 120px;
 }
 .hero-tag {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--accent);
@@ -44,22 +42,13 @@
   margin-bottom: 20px;
   white-space: nowrap;
   overflow: hidden;
-  /* opacity set by GSAP fromTo */
+  animation: tagScroll 18s linear infinite;
 }
-
-@media (max-width: 480px) {
-  .hero-tag {
-    display: block !important;
-  }
+@keyframes tagScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-.tag-dot {
-  width: 6px; height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: blink 2s ease infinite;
-  flex-shrink: 0;
-}
-@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+.tag-dot { display: none; }
 
 .hero-title {
   font-family: var(--font-head);
@@ -129,32 +118,10 @@
   .hero { padding: 0 4%; }
   .hero-content { padding-top: 80px; }
   .hero-title { font-size: clamp(3rem, 16vw, 5rem); line-height: 0.9; }
-  /* show tag line on mobile as scrolling ticker */
-  .hero-tag {
-    display: block;
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-    overflow: hidden;
-    color: var(--accent);
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    animation: tagScroll 14s linear infinite;
-  }
-  .tag-dot { display: none; }
+  .hero-tag { font-size: 0.6rem; letter-spacing: 0.1em; animation-duration: 14s; }
   .hero-sub { font-size: 0.95rem; margin-bottom: 32px; }
   .hero-btns { gap: 12px; }
   .scroll-mouse { display: none; }
   .marquee-bg { opacity: 0.18; bottom: 50px; }
-  .marquee-track {
-    font-size: 1.1rem;
-    gap: 16px;
-    letter-spacing: 0.06em;
-    animation-duration: 18s;
-  }
-}
-@keyframes tagScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  .marquee-track { font-size: 1.1rem; gap: 16px; letter-spacing: 0.06em; animation-duration: 18s; }
 }
