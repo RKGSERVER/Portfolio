@@ -120,5 +120,6 @@
   .hero-sub { font-size: 0.95rem; margin-bottom: 32px; }
   .hero-btns { gap: 12px; }
   .scroll-mouse { display: none; }
-  .marquee-bg { display: none; }
+  /* marquee stays visible on mobile */
+  .marquee-bg { opacity: 0.06; bottom: 60px; }
 }
