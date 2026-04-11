@@ -3,5 +3,15 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',  // custom domain — root path
+  base: '/',
+  build: {
+    // unique hash in every filename — forces browser to fetch fresh on every deploy
+    rollupOptions: {
+      output: {
+        entryFileNames:  'assets/[name]-[hash].js',
+        chunkFileNames:  'assets/[name]-[hash].js',
+        assetFileNames:  'assets/[name]-[hash][extname]',
+      }
+    }
+  }
 })
