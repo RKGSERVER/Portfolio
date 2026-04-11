@@ -18,18 +18,10 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-marquee" aria-hidden="true">
-        {/* Two identical groups — group 1 scrolls out, group 2 seamlessly replaces it */}
+        {/* 4 groups — enough content for seamless loop on any screen size */}
         <div className="footer-track">
-          {[0, 1].map(group => (
+          {[0, 1, 2, 3].map(group => (
             <div key={group} className="footer-group">
-              <span className="fw">STAY</span>
-              <span className="fsep">·</span>
-              <span className="fw outline">TUNED</span>
-              <span className="fsep">·</span>
-              <span className="fw">STAY</span>
-              <span className="fsep">·</span>
-              <span className="fw outline">TUNED</span>
-              <span className="fsep">·</span>
               <span className="fw">STAY</span>
               <span className="fsep">·</span>
               <span className="fw outline">TUNED</span>

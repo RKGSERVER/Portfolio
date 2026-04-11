@@ -28,7 +28,6 @@
 .footer-group {
   display: flex;
   flex-shrink: 0;
-  min-width: 100%;
   align-items: center;
 }
 
