@@ -35,9 +35,13 @@
 .c-text.show { opacity: 1; }
 
 /* hide cursor on touch — JS hides via display:none, this is fallback */
-@media (hover: none) and (pointer: coarse) {
-  .c-dot, .c-ring, .c-text { display: none; }
-  body { cursor: auto; }
+@media (hover: none) and (pointer: coarse), (pointer: none) {
+  .c-dot, .c-ring, .c-text {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  body { cursor: auto !important; }
 }
 
 /* ── Water ripple touch effect ───────────────────────────────────────────── */

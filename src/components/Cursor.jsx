@@ -29,13 +29,14 @@ export default function Cursor() {
   const textRef = useRef(null)
 
   useEffect(() => {
-    const touch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    // check touch via pointer — most reliable method
+    const isTouch = navigator.maxTouchPoints > 0 || 'ontouchstart' in window
 
-    if (touch) {
-      // ── MOBILE: hide cursor entirely, water ripple on tap only ──────────
-      dotRef.current.style.display  = 'none'
-      ringRef.current.style.display = 'none'
-      textRef.current.style.display = 'none'
+    if (isTouch) {
+      // force hide via style — belt AND suspenders with CSS
+      ;[dotRef, ringRef, textRef].forEach(r => {
+        if (r.current) r.current.style.cssText = 'display:none!important'
+      })
 
       const onTap = e => {
         const t = e.changedTouches[0]
@@ -45,7 +46,7 @@ export default function Cursor() {
       return () => document.removeEventListener('touchend', onTap)
     }
 
-    // ── DESKTOP: original mouse cursor ─────────────────────────────────
+    // ── Desktop mouse cursor ────────────────────────────────────────────
     let mx = 0, my = 0, rx = 0, ry = 0
 
     const onMove = e => {
