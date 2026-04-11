@@ -2,25 +2,22 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import './Cursor.css'
 
-// ── Water ripple on touch ─────────────────────────────────────────────────────
-function createRipple(x, y) {
-  const count = 3
-  for (let i = 0; i < count; i++) {
-    const ring = document.createElement('div')
-    ring.className = 'water-ripple'
-    ring.style.left = x + 'px'
-    ring.style.top  = y + 'px'
-    document.body.appendChild(ring)
-
-    gsap.fromTo(ring,
-      { scale: 0, opacity: 0.7, x: '-50%', y: '-50%' },
+function spawnRipple(x, y) {
+  for (let i = 0; i < 3; i++) {
+    const el = document.createElement('div')
+    el.className = 'water-ripple'
+    el.style.left = x + 'px'
+    el.style.top  = y + 'px'
+    document.body.appendChild(el)
+    gsap.fromTo(el,
+      { scale: 0, opacity: 0.65, x: '-50%', y: '-50%' },
       {
-        scale: 3 + i * 1.2,
+        scale: 2.5 + i * 1.2,
         opacity: 0,
-        duration: 0.9 + i * 0.25,
-        delay: i * 0.12,
+        duration: 0.8 + i * 0.22,
+        delay: i * 0.1,
         ease: 'power2.out',
-        onComplete: () => ring.remove()
+        onComplete: () => el.remove()
       }
     )
   }
@@ -32,24 +29,23 @@ export default function Cursor() {
   const textRef = useRef(null)
 
   useEffect(() => {
-    const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    const touch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
 
-    if (isTouch) {
-      // hide custom cursor elements
+    if (touch) {
+      // ── MOBILE: hide cursor entirely, water ripple on tap only ──────────
       dotRef.current.style.display  = 'none'
       ringRef.current.style.display = 'none'
       textRef.current.style.display = 'none'
 
-      // water ripple on every tap
-      const onTouchStart = e => {
-        const t = e.touches[0]
-        createRipple(t.clientX, t.clientY)
+      const onTap = e => {
+        const t = e.changedTouches[0]
+        spawnRipple(t.clientX, t.clientY)
       }
-      document.addEventListener('touchstart', onTouchStart, { passive: true })
-      return () => document.removeEventListener('touchstart', onTouchStart)
+      document.addEventListener('touchend', onTap, { passive: true })
+      return () => document.removeEventListener('touchend', onTap)
     }
 
-    // ── Desktop mouse cursor ────────────────────────────────────────────
+    // ── DESKTOP: original mouse cursor ─────────────────────────────────
     let mx = 0, my = 0, rx = 0, ry = 0
 
     const onMove = e => {
