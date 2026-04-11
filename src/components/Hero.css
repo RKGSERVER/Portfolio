@@ -120,12 +120,21 @@
 /* ── HERO MOBILE ── */
 @media (max-width: 480px) {
   .hero { padding: 0 4%; }
+  .hero-content { padding-top: 80px; }
   .hero-title { font-size: clamp(3rem, 16vw, 5rem); line-height: 0.9; }
-  .hero-tag { font-size: 0.65rem; letter-spacing: 0.15em; flex-wrap: wrap; }
+  /* tag line: scroll horizontally instead of truncating */
+  .hero-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    animation: tagScroll 14s linear infinite;
+  }
+  .tag-dot { display: none; }
   .hero-sub { font-size: 0.95rem; margin-bottom: 32px; }
   .hero-btns { gap: 12px; }
   .scroll-mouse { display: none; }
-  /* marquee more visible on mobile — smaller font so full words show */
   .marquee-bg { opacity: 0.18; bottom: 50px; }
   .marquee-track {
     font-size: 1.1rem;
@@ -133,4 +142,8 @@
     letter-spacing: 0.06em;
     animation-duration: 18s;
   }
+}
+@keyframes tagScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
