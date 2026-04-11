@@ -123,4 +123,9 @@
   .scroll-mouse { display: none; }
   /* marquee more visible on mobile */
   .marquee-bg { opacity: 0.18; bottom: 50px; }
+  .marquee-track {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    gap: 20px;
+    animation-duration: 14s;
+  }
 }
