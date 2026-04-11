@@ -121,11 +121,12 @@
   .hero-sub { font-size: 0.95rem; margin-bottom: 32px; }
   .hero-btns { gap: 12px; }
   .scroll-mouse { display: none; }
-  /* marquee more visible on mobile */
+  /* marquee more visible on mobile — smaller font so full words show */
   .marquee-bg { opacity: 0.18; bottom: 50px; }
   .marquee-track {
-    font-size: clamp(1.4rem, 5vw, 2rem);
-    gap: 20px;
-    animation-duration: 14s;
+    font-size: 1.1rem;
+    gap: 16px;
+    letter-spacing: 0.06em;
+    animation-duration: 18s;
   }
 }
