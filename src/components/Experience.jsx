@@ -26,7 +26,6 @@ const techStack = [
 const achievements = [
   { icon: '🎓', title: 'BCA 3rd Year', desc: 'Pursuing Bachelor of Computer Applications with consistent academic performance.', tag: 'Education' },
   { icon: '📊', title: 'Certified Digital Marketer', desc: 'Holds a certified Digital Marketing certificate — SEO, social media, content strategy and online branding.', tag: 'Certificate' },
-  { icon: '🎮', title: 'Esport Player', desc: 'Competitive esport player — strategic thinking, fast reflexes, and team coordination at a high level.', tag: 'Esports' },
   { icon: '💻', title: 'Full Stack Projects', desc: 'Built and deployed multiple web applications using modern tech stacks.', tag: 'Development' },
   { icon: '🏆', title: 'Python Competition', desc: 'Secured 2nd position on Competition, solving real-world problems under pressure.', tag: 'Competition' },
   { icon: '🎵', title: '38+ Lyrics Written', desc: 'Crafted over 32 original lyric pieces — storytelling through every bar.', tag: 'Music' },

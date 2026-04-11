@@ -91,7 +91,7 @@ export default function About() {
         <div ref={textRef} className="about-text">
           <p className="section-eyebrow anim">About Me</p>
           <h2 className="section-title anim">Who Am I?</h2>
-          <p className="about-para anim">I'm a <span className="highlight">BCA 3rd year student</span>, <span className="highlight">Certified Digital Marketer</span>, and <span className="highlight">Esport Player</span> — three worlds that most people keep separate, but I live all three at once.</p>
+          <p className="about-para anim">I'm a <span className="highlight">BCA 3rd year student</span> and <span className="highlight">Certified Digital Marketer</span> — two worlds that most people keep separate, but I live both at once.</p>
           <p className="about-para anim">In <span className="highlight">tech</span>, I build web applications and write clean code across C, C++, Java, Python and JavaScript. I love turning ideas into real products that people actually use.</p>
           <p className="about-para anim">In <span className="highlight">digital marketing</span>, I understand how brands grow online — SEO, social media strategy, content creation, audience targeting and online branding. I don't just build products, I know how to get them seen.</p>
           <p className="about-para anim">In <span className="highlight">esports</span>, I compete at a high level — fast decision-making, team coordination, strategic thinking under pressure. Gaming taught me discipline and the mindset to never stop improving.</p>

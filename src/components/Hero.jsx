@@ -129,7 +129,7 @@ export default function Hero() {
 
       <div className="marquee-bg" aria-hidden="true">
         <div className="marquee-track">
-          {['DEVELOPER','·','BCA','·','DIGITAL MARKETER','·','ESPORT PLAYER','·','CREATOR','·','ARTIST','·','DEVELOPER','·','BCA','·','DIGITAL MARKETER','·','ESPORT PLAYER','·','CREATOR','·','ARTIST','·'].map((w, i) => (
+          {['DEVELOPER','·','BCA','·','DIGITAL MARKETER','·','CREATOR','·','ARTIST','·','DEVELOPER','·','BCA','·','DIGITAL MARKETER','·','CREATOR','·','ARTIST','·'].map((w, i) => (
             <span key={i}>{w}</span>
           ))}
         </div>
@@ -138,7 +138,7 @@ export default function Hero() {
       <div className="hero-content">
         <div ref={tagRef} className="hero-tag">
           <div className="hero-tag-inner">
-            <span>Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp; Esport Player &nbsp;·&nbsp; Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp; Esport Player &nbsp;·&nbsp;</span>
+            <span>Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp; Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp;</span>
           </div>
         </div>
         <h1 className="hero-title">
