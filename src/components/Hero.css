@@ -13,7 +13,7 @@
 .marquee-bg {
   position: absolute; bottom: 80px; left: 0; right: 0;
   overflow: hidden; z-index: 1;
-  opacity: 0.04; pointer-events: none;
+  opacity: 0.12; pointer-events: none;
 }
 .marquee-track {
   display: flex; gap: 40px;
@@ -21,6 +21,7 @@
   font-family: var(--font-head);
   font-size: clamp(4rem, 10vw, 9rem);
   letter-spacing: 0.1em;
+  color: var(--white);
   animation: marqueeScroll 22s linear infinite;
 }
 .marquee-track span { flex-shrink: 0; }
@@ -120,6 +121,6 @@
   .hero-sub { font-size: 0.95rem; margin-bottom: 32px; }
   .hero-btns { gap: 12px; }
   .scroll-mouse { display: none; }
-  /* marquee stays visible on mobile */
-  .marquee-bg { opacity: 0.06; bottom: 60px; }
+  /* marquee more visible on mobile */
+  .marquee-bg { opacity: 0.18; bottom: 50px; }
 }
