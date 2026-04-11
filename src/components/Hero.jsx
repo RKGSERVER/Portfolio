@@ -137,8 +137,9 @@ export default function Hero() {
 
       <div className="hero-content">
         <div ref={tagRef} className="hero-tag">
-          <span className="tag-dot" />
-          <span>Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp; Esport Player &nbsp;·&nbsp; Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp; Esport Player</span>
+          <div className="hero-tag-inner">
+            <span>Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp; Esport Player &nbsp;·&nbsp; Rozario Rajkumar &nbsp;·&nbsp; BCA 3rd Year &nbsp;·&nbsp; Certified Digital Marketer &nbsp;·&nbsp; Esport Player &nbsp;·&nbsp;</span>
+          </div>
         </div>
         <h1 className="hero-title">
           <span ref={line1} className="hero-line">I CODE</span>

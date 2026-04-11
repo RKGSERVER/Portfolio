@@ -40,8 +40,12 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   margin-bottom: 20px;
-  white-space: nowrap;
   overflow: hidden;
+  width: 100%;
+}
+.hero-tag-inner {
+  display: inline-block;
+  white-space: nowrap;
   animation: tagScroll 18s linear infinite;
 }
 @keyframes tagScroll {
