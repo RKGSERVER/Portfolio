@@ -1,0 +1,124 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 0 5%;
+  overflow: hidden;
+}
+.hero-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+.marquee-bg {
+  position: absolute; bottom: 80px; left: 0; right: 0;
+  overflow: hidden; z-index: 1;
+  opacity: 0.04; pointer-events: none;
+}
+.marquee-track {
+  display: flex; gap: 40px;
+  white-space: nowrap;
+  font-family: var(--font-head);
+  font-size: clamp(4rem, 10vw, 9rem);
+  letter-spacing: 0.1em;
+  animation: marqueeScroll 22s linear infinite;
+}
+.marquee-track span { flex-shrink: 0; }
+@keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 900px;
+}
+.hero-tag {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  /* opacity set by GSAP fromTo */
+}
+.tag-dot {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: blink 2s ease infinite;
+  flex-shrink: 0;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+
+.hero-title {
+  font-family: var(--font-head);
+  font-size: clamp(5rem, 13vw, 12rem);
+  line-height: 0.88;
+  display: flex; flex-direction: column;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+.hero-line {
+  display: block;
+  /* initial state handled by GSAP fromTo */
+}
+.hero-line.outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--accent);
+  /* removed drop-shadow filter — it was causing blur on the stroke text */
+  text-shadow: 0 0 40px rgba(255,60,0,0.25);
+}
+.hero-sub {
+  font-size: 1.1rem;
+  color: #bbb;
+  max-width: 480px;
+  margin-bottom: 44px;
+  line-height: 1.8;
+  /* opacity set by GSAP fromTo */
+}
+.hero-btns {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  /* opacity set by GSAP fromTo */
+}
+.hero-side-text {
+  position: absolute; right: 40px; top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  color: var(--gray2);
+  z-index: 2;
+}
+.scroll-mouse {
+  position: absolute; bottom: 40px; left: 5%;
+  width: 24px; height: 38px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: flex; justify-content: center;
+  padding-top: 6px; z-index: 2;
+}
+.scroll-wheel {
+  width: 3px; height: 8px;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: wheelScroll 2s ease infinite;
+}
+@keyframes wheelScroll {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+@media (max-width: 640px) {
+  .hero-side-text { display: none; }
+  .hero-title { font-size: clamp(3.5rem, 18vw, 6rem); }
+}
+
+/* ── HERO MOBILE ── */
+@media (max-width: 480px) {
+  .hero { padding: 0 4%; }
+  .hero-title { font-size: clamp(3rem, 16vw, 5rem); line-height: 0.9; }
+  .hero-tag { font-size: 0.65rem; letter-spacing: 0.15em; flex-wrap: wrap; }
+  .hero-sub { font-size: 0.95rem; margin-bottom: 32px; }
+  .hero-btns { gap: 12px; }
+  .scroll-mouse { display: none; }
+  .marquee-bg { display: none; }
+}
