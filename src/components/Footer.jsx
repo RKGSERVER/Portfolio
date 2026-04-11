@@ -42,18 +42,26 @@ export default function Footer() {
         <div className="footer-socials">
           {footerSocials.map(({ Icon, href, label, isEmail }) => (
             <div key={label} className="footer-social-wrap">
-              <a
-                className="footer-social-link"
-                href={isEmail ? undefined : href}
-                aria-label={label}
-                target={!isEmail && href.startsWith('http') ? '_blank' : undefined}
-                rel="noreferrer"
-                onClick={isEmail ? (e) => { e.preventDefault(); trigger() } : undefined}
-                style={isEmail ? { cursor: 'none' } : {}}
-              >
-                <Icon size={32} />
-              </a>
-              {/* glitch reveal pops above the email icon */}
+              {isEmail ? (
+                /* button — no href, no scroll, no mailto trigger on mobile */
+                <button
+                  className="footer-social-link footer-email-btn"
+                  aria-label={label}
+                  onClick={trigger}
+                >
+                  <Icon size={32} />
+                </button>
+              ) : (
+                <a
+                  className="footer-social-link"
+                  href={href}
+                  aria-label={label}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel="noreferrer"
+                >
+                  <Icon size={32} />
+                </a>
+              )}
               {isEmail && visible && (
                 <div className="footer-email-reveal">
                   <span className="footer-email-text">{display}</span>
