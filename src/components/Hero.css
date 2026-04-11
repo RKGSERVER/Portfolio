@@ -33,7 +33,13 @@
   padding-top: 100px;
 }
 .hero-tag {
-  display: none; /* hidden on desktop — shown only on mobile */
+  display: none !important;
+}
+
+@media (max-width: 480px) {
+  .hero-tag {
+    display: block !important;
+  }
 }
 .tag-dot {
   width: 6px; height: 6px;
