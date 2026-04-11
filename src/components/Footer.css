@@ -121,8 +121,7 @@
 
 /* ── FOOTER MOBILE ── */
 @media (max-width: 480px) {
-  .footer-track { font-size: clamp(1.6rem, 6vw, 2.4rem); animation-duration: 14s; }
-  .footer-track .fw { padding: 12px 16px; }
+  .footer-track .fw { padding: 14px 20px; }
   .footer-bottom { flex-direction: column; align-items: center; text-align: center; padding: 24px 4%; gap: 16px; }
   .footer-logo { font-size: 1.5rem; }
   .footer-bottom p { font-size: 0.85rem; }
