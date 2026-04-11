@@ -127,5 +127,14 @@
   .footer-bottom p { font-size: 0.85rem; }
   .footer-socials { justify-content: center; gap: 10px; }
   .footer-social-link svg, .footer-social-link img { width: 28px; height: 28px; }
-  .footer-email-reveal { right: auto; left: 50%; transform: translateX(-50%); }
+  /* email popup — clamp inside screen */
+  .footer-email-reveal {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90vw;
+    white-space: normal;
+    text-align: center;
+  }
+  .footer-email-text { font-size: 0.78rem; letter-spacing: 0.04em; }
 }
