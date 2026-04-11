@@ -4,7 +4,7 @@
   background: var(--bg);
 }
 
-/* ── Branding marquee — matches hero word marquee style ───────────────────── */
+/* ── Branding marquee ─────────────────────────────────────────────────────── */
 .footer-marquee {
   overflow: hidden;
   border-top: 1px solid var(--border2);
@@ -14,7 +14,6 @@
 
 .footer-track {
   display: flex;
-  gap: 0;
   white-space: nowrap;
   font-family: var(--font-head);
   font-size: clamp(4rem, 10vw, 9rem);
@@ -22,6 +21,15 @@
   line-height: 1;
   color: var(--white);
   animation: footerMarquee 22s linear infinite;
+  will-change: transform;
+}
+
+/* each group is one full copy of the content */
+.footer-group {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 100%;
+  align-items: center;
 }
 
 .footer-track .fw {
@@ -29,13 +37,11 @@
   padding: 20px 40px;
 }
 
-/* every other word is outlined — same as hero "I RISE" */
 .footer-track .fw.outline {
   color: transparent;
   -webkit-text-stroke: 2px var(--white);
 }
 
-/* the dot separator — accent colored, small */
 .footer-track .fsep {
   flex-shrink: 0;
   color: var(--accent);
@@ -47,7 +53,7 @@
 
 @keyframes footerMarquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-25%); }
+  to   { transform: translateX(-50%); }
 }
 
 /* ── Footer bottom ────────────────────────────────────────────────────────── */
@@ -116,11 +122,8 @@
 
 /* ── FOOTER MOBILE ── */
 @media (max-width: 480px) {
-  .footer-track {
-    font-size: clamp(2rem, 8vw, 3rem);
-    animation-duration: 12s;
-  }
-  .footer-track .fw { padding: 14px 16px; }
+  .footer-track { font-size: clamp(3rem, 10vw, 5rem); animation-duration: 16s; }
+  .footer-track .fw { padding: 16px 24px; }
   .footer-bottom { flex-direction: column; align-items: center; text-align: center; padding: 24px 4%; gap: 16px; }
   .footer-logo { font-size: 1.5rem; }
   .footer-bottom p { font-size: 0.85rem; }
