@@ -8,6 +8,10 @@ export default function Loader() {
   const [width, setWidth] = useState(0)
 
   useEffect(() => {
+    // lock scroll while loading
+    document.body.style.overflow = 'hidden'
+    document.body.style.touchAction = 'none'
+
     let progress = 0
     const interval = setInterval(() => {
       progress += Math.random() * 5 + 1
@@ -21,7 +25,9 @@ export default function Loader() {
             ease: 'power4.inOut',
             onComplete: () => {
               loaderRef.current.style.display = 'none'
-              // trigger hero
+              // unlock scroll
+              document.body.style.overflow = ''
+              document.body.style.touchAction = ''
               document.dispatchEvent(new Event('loaderDone'))
             }
           })
@@ -30,7 +36,13 @@ export default function Loader() {
       setCount(Math.floor(progress))
       setWidth(progress)
     }, 28)
-    return () => clearInterval(interval)
+
+    return () => {
+      clearInterval(interval)
+      // safety unlock if component unmounts
+      document.body.style.overflow = ''
+      document.body.style.touchAction = ''
+    }
   }, [])
 
   return (
