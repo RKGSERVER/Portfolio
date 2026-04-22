@@ -15,11 +15,30 @@ const supabase = createClient(
 export default function About() {
   const visualRef = useRef(null)
   const textRef = useRef(null)
-  // show stored count immediately — no flicker
+  const vcRef = useRef(null)
+  const prevCountRef = useRef(null)
+
   const [visitorCount, setVisitorCount] = useState(() => {
     const stored = localStorage.getItem('rkg_visited')
     return stored ? Number(stored) : null
   })
+
+  // animate count-up whenever visitorCount changes
+  useEffect(() => {
+    if (visitorCount === null || !vcRef.current) return
+    const from = prevCountRef.current ?? visitorCount
+    prevCountRef.current = visitorCount
+    const obj = { v: from }
+    gsap.to(obj, {
+      v: visitorCount,
+      duration: 1.5,
+      ease: 'power2.out',
+      onUpdate() {
+        if (vcRef.current)
+          vcRef.current.textContent = Math.floor(obj.v).toLocaleString()
+      }
+    })
+  }, [visitorCount])
 
   useEffect(() => {
     let channel
@@ -179,7 +198,7 @@ export default function About() {
             </div>
             <div className="stat">
               <div className="stat-num-wrap">
-                <span className="stat-num">
+                <span className="stat-num" ref={vcRef}>
                   {visitorCount !== null ? visitorCount.toLocaleString() : '…'}
                 </span>
                 <span className="stat-suffix">+</span>
