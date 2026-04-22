@@ -3,6 +3,8 @@
   padding: 130px 5%;
   position: relative;
   overflow: hidden;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .section-num {
