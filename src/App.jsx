@@ -37,7 +37,7 @@ export default function App() {
       <Cursor />
       <Loader />
       <Navbar />
-      <main>
+      <main style={{ overflowX: 'hidden', width: '100%' }}>
         <Hero />
         <About />
         <Skills />
