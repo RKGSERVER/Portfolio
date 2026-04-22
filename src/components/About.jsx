@@ -1,17 +1,29 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { createClient } from '@supabase/supabase-js'
 import profileImg from '../PASSPORT SIZE PHOTO.jpg'
 import './About.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const BASE_COUNT = 60467
+const supabase = createClient(
+  'https://ldmmhqdaghbgcptujhoz.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkbW1ocWRhZ2hiZ2NwdHVqaG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NzczMTEsImV4cCI6MjA5MjQ1MzMxMX0.8gPA2M34Z0tOtjbUfQ85RbvO5m345zCM2gAkUx3y2BA'
+)
 
 export default function About() {
   const visualRef = useRef(null)
   const textRef = useRef(null)
-  const [visitorCount] = useState(BASE_COUNT)
+  const [visitorCount, setVisitorCount] = useState(null)
+
+  useEffect(() => {
+    const increment = async () => {
+      const { data, error } = await supabase.rpc('increment_visitors')
+      if (!error && data) setVisitorCount(data)
+    }
+    increment()
+  }, [])
 
   useEffect(() => {
     // ── Image protection — disable right-click & drag on entire page ──
@@ -130,7 +142,7 @@ export default function About() {
             <div className="stat">
               <div className="stat-num-wrap">
                 <span className="stat-num">
-                  {visitorCount.toLocaleString()}
+                  {visitorCount !== null ? visitorCount.toLocaleString() : '60,467'}
                 </span>
                 <span className="stat-suffix">+</span>
               </div>
