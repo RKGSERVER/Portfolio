@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #050505;
+  --bg2: #080808;
+  --accent: #ff3c00;
+  --accent2: #ff9500;
+  --white: #f0f0f0;
+  --gray: #999;
+  --gray2: #555;
+  --card-bg: #0f0f0f;
+  --border: rgba(255,60,0,0.15);
+  --border2: rgba(255,255,255,0.06);
+  --font-head: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* scrollbar — hidden but scroll still works */
+::-webkit-scrollbar { display: none; }
+* { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* selection */
+::selection { background: var(--accent); color: #fff; }
+
+/* ── MOBILE BASE ── */
+@media (max-width: 480px) {
+  body { font-size: 15px; cursor: auto; }
+  /* restore default cursor on mobile — custom cursor doesn't work on touch */
+}

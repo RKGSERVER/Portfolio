@@ -1,0 +1,52 @@
+.skills-header { margin-bottom: 60px; position: relative; z-index: 1; }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  position: relative; z-index: 1;
+}
+.skill-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border2);
+  padding: 36px 28px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.4s;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  cursor: none;
+}
+.skill-card:hover { border-color: rgba(255,60,0,0.4); }
+.card-glow {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,60,0,0.08) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.4s; pointer-events: none;
+}
+.skill-card:hover .card-glow { opacity: 1; }
+.skill-icon-wrap {
+  width: 48px; height: 48px;
+  background: rgba(255,60,0,0.08);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: var(--accent);
+  margin-bottom: 20px;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.skill-card h3 { font-family: var(--font-head); font-size: 1.7rem; margin-bottom: 10px; }
+.skill-card p { color: #bbb; font-size: 0.95rem; line-height: 1.7; margin-bottom: 24px; font-weight: 400; }
+.skill-bar { height: 2px; background: rgba(255,255,255,0.06); overflow: hidden; margin-bottom: 8px; }
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  width: 0%;
+  transition: width 1.8s var(--ease);
+}
+.skill-pct { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.08em; }
+
+@media (max-width: 640px) { .skills-grid { grid-template-columns: 1fr; } }
+
+/* ── SKILLS MOBILE ── */
+@media (max-width: 480px) {
+  .skills-grid { grid-template-columns: 1fr; gap: 16px; }
+  .skill-card { padding: 24px 20px; }
+  .skill-card h3 { font-size: 1.4rem; }
+  .skill-card p { font-size: 0.88rem; }
+}
