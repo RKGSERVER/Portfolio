@@ -37,8 +37,8 @@ export default function About() {
         y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power4.out' }
     )
 
-    // counters
-    textRef.current.querySelectorAll('.stat-num').forEach(el => {
+    // counters — only elements that have data-target
+    textRef.current.querySelectorAll('.stat-num[data-target]').forEach(el => {
       ScrollTrigger.create({
         trigger: el, start: 'top 85%', once: true,
         onEnter: () => {
