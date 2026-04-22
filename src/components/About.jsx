@@ -15,37 +15,47 @@ const supabase = createClient(
 export default function About() {
   const visualRef = useRef(null)
   const textRef = useRef(null)
-  const [visitorCount, setVisitorCount] = useState(null)
+  // show stored count immediately — no flicker
+  const [visitorCount, setVisitorCount] = useState(() => {
+    const stored = localStorage.getItem('rkg_visited')
+    return stored ? Number(stored) : null
+  })
 
   useEffect(() => {
     let channel
+    const KEY = 'rkg_visited'
 
     const run = async () => {
-      // ── 1. Use localStorage so refresh doesn't re-increment ──
-      const alreadyCounted = localStorage.getItem('rkg_vc')
+      const alreadyCounted = localStorage.getItem(KEY)
 
       if (!alreadyCounted) {
+        // new device/browser — increment once
         const { data } = await supabase.rpc('increment_visitors')
-        if (data) setVisitorCount(data)
-        localStorage.setItem('rkg_vc', '1')
+        if (data != null) {
+          setVisitorCount(data)
+          localStorage.setItem(KEY, String(data))
+        }
       } else {
+        // already visited — fetch latest without incrementing
         const { data } = await supabase
-          .from('visitors')
-          .select('count')
-          .eq('id', 1)
-          .single()
-        if (data) setVisitorCount(data.count)
+          .from('visitors').select('count').eq('id', 1).single()
+        if (data) {
+          setVisitorCount(data.count)
+          localStorage.setItem(KEY, String(data.count))
+        }
       }
 
-      // ── 2. Realtime — live update without refresh ──
+      // live updates for all open tabs
       channel = supabase
-        .channel('visitors-count')
+        .channel('visitors-realtime')
         .on('postgres_changes', {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'visitors',
-          filter: 'id=eq.1'
-        }, payload => setVisitorCount(payload.new.count))
+          event: 'UPDATE', schema: 'public',
+          table: 'visitors', filter: 'id=eq.1'
+        }, payload => {
+          setVisitorCount(payload.new.count)
+          // update stored value but don't change visited flag
+          localStorage.setItem(KEY, String(payload.new.count))
+        })
         .subscribe()
     }
 
@@ -170,7 +180,7 @@ export default function About() {
             <div className="stat">
               <div className="stat-num-wrap">
                 <span className="stat-num">
-                  {visitorCount !== null ? visitorCount.toLocaleString() : '60,467'}
+                  {visitorCount !== null ? visitorCount.toLocaleString() : '…'}
                 </span>
                 <span className="stat-suffix">+</span>
               </div>
