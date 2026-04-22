@@ -18,11 +18,40 @@ export default function About() {
   const [visitorCount, setVisitorCount] = useState(null)
 
   useEffect(() => {
-    const increment = async () => {
-      const { data, error } = await supabase.rpc('increment_visitors')
-      if (!error && data) setVisitorCount(data)
+    const run = async () => {
+      // ── 1. Increment only once per session (not on every refresh) ──
+      const alreadyCounted = sessionStorage.getItem('vc')
+      if (!alreadyCounted) {
+        const { data } = await supabase.rpc('increment_visitors')
+        if (data) setVisitorCount(data)
+        sessionStorage.setItem('vc', '1')
+      } else {
+        // just read current count without incrementing
+        const { data } = await supabase
+          .from('visitors')
+          .select('count')
+          .eq('id', 1)
+          .single()
+        if (data) setVisitorCount(data.count)
+      }
+
+      // ── 2. Realtime subscription — updates live for everyone ──
+      const channel = supabase
+        .channel('visitors-count')
+        .on('postgres_changes', {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'visitors',
+          filter: 'id=eq.1'
+        }, payload => {
+          setVisitorCount(payload.new.count)
+        })
+        .subscribe()
+
+      return () => supabase.removeChannel(channel)
     }
-    increment()
+
+    run()
   }, [])
 
   useEffect(() => {
