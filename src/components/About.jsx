@@ -12,50 +12,43 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkbW1ocWRhZ2hiZ2NwdHVqaG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NzczMTEsImV4cCI6MjA5MjQ1MzMxMX0.8gPA2M34Z0tOtjbUfQ85RbvO5m345zCM2gAkUx3y2BA'
 )
 
+// animate a number from → to inside a DOM element
+function animateNum(el, from, to, duration = 2) {
+  if (!el) return
+  const obj = { v: from }
+  gsap.to(obj, {
+    v: to, duration, ease: 'power2.out',
+    onUpdate() { el.textContent = Math.floor(obj.v).toLocaleString() }
+  })
+}
+
 export default function About() {
-  const visualRef = useRef(null)
-  const textRef = useRef(null)
-  const vcRef = useRef(null)
-  const prevCountRef = useRef(null)
+  const visualRef    = useRef(null)
+  const textRef      = useRef(null)
+  const vcRef        = useRef(null)          // ref to visitor <span>
+  const scrolledIn   = useRef(false)         // has section scrolled into view?
+  const pendingCount = useRef(null)          // count received before scroll
 
   const [visitorCount, setVisitorCount] = useState(() => {
-    const stored = localStorage.getItem('rkg_visited')
-    return stored ? Number(stored) : null
+    const s = localStorage.getItem('rkg_visited')
+    return s ? Number(s) : null
   })
 
-  // animate count-up whenever visitorCount changes
-  useEffect(() => {
-    if (visitorCount === null || !vcRef.current) return
-    const from = prevCountRef.current ?? visitorCount
-    prevCountRef.current = visitorCount
-    const obj = { v: from }
-    gsap.to(obj, {
-      v: visitorCount,
-      duration: 1.5,
-      ease: 'power2.out',
-      onUpdate() {
-        if (vcRef.current)
-          vcRef.current.textContent = Math.floor(obj.v).toLocaleString()
-      }
-    })
-  }, [visitorCount])
-
+  // ── 1. Supabase: increment once, then subscribe realtime ──────────────────
   useEffect(() => {
     let channel
     const KEY = 'rkg_visited'
 
     const run = async () => {
-      const alreadyCounted = localStorage.getItem(KEY)
+      const seen = localStorage.getItem(KEY)
 
-      if (!alreadyCounted) {
-        // new device/browser — increment once
+      if (!seen) {
         const { data } = await supabase.rpc('increment_visitors')
         if (data != null) {
           setVisitorCount(data)
           localStorage.setItem(KEY, String(data))
         }
       } else {
-        // already visited — fetch latest without incrementing
         const { data } = await supabase
           .from('visitors').select('count').eq('id', 1).single()
         if (data) {
@@ -64,16 +57,25 @@ export default function About() {
         }
       }
 
-      // live updates for all open tabs
+      // realtime — another device just visited
       channel = supabase
         .channel('visitors-realtime')
         .on('postgres_changes', {
           event: 'UPDATE', schema: 'public',
           table: 'visitors', filter: 'id=eq.1'
         }, payload => {
-          setVisitorCount(payload.new.count)
-          // update stored value but don't change visited flag
-          localStorage.setItem(KEY, String(payload.new.count))
+          const newCount = payload.new.count
+          localStorage.setItem(KEY, String(newCount))
+          setVisitorCount(prev => {
+            if (scrolledIn.current) {
+              // section visible — animate immediately
+              animateNum(vcRef.current, prev ?? newCount, newCount)
+            } else {
+              // section not visible yet — store for later
+              pendingCount.current = newCount
+            }
+            return newCount
+          })
         })
         .subscribe()
     }
@@ -82,18 +84,19 @@ export default function About() {
     return () => { if (channel) supabase.removeChannel(channel) }
   }, [])
 
+  // ── 2. Image protection ───────────────────────────────────────────────────
   useEffect(() => {
-    // ── Image protection — disable right-click & drag on entire page ──
     const noContext = e => e.preventDefault()
-    const noDrag = e => e.preventDefault()
+    const noDrag    = e => e.preventDefault()
     document.addEventListener('contextmenu', noContext)
-    document.addEventListener('dragstart', noDrag)
+    document.addEventListener('dragstart',   noDrag)
     return () => {
       document.removeEventListener('contextmenu', noContext)
-      document.removeEventListener('dragstart', noDrag)
+      document.removeEventListener('dragstart',   noDrag)
     }
   }, [])
 
+  // ── 3. GSAP scroll animations ─────────────────────────────────────────────
   useEffect(() => {
     gsap.fromTo(visualRef.current,
       { x: -80, opacity: 0 },
@@ -106,7 +109,7 @@ export default function About() {
         y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power4.out' }
     )
 
-    // counters — only elements that have data-target
+    // other stat counters
     textRef.current.querySelectorAll('.stat-num[data-target]').forEach(el => {
       ScrollTrigger.create({
         trigger: el, start: 'top 85%', once: true,
@@ -122,14 +125,30 @@ export default function About() {
     })
   }, [])
 
+  // ── 4. Visitor counter scroll trigger — animate when section enters view ──
+  useEffect(() => {
+    if (visitorCount === null) return
+    const trigger = ScrollTrigger.create({
+      trigger: vcRef.current,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        scrolledIn.current = true
+        // animate from 0 to current count
+        const target = pendingCount.current ?? visitorCount
+        pendingCount.current = null
+        animateNum(vcRef.current, 0, target)
+      }
+    })
+    return () => trigger.kill()
+  }, [visitorCount])
+
   return (
     <section className="about section" id="about">
       <div className="section-num">01</div>
       <div className="about-grid">
         <div ref={visualRef} className="about-visual">
           <div className="avatar-wrap">
-            {/* ── Glitch Profile Image ── */}
-            {/* Image loaded as CSS background — not extractable via inspect/right-click */}
             <div className="avatar-hex">
               <div
                 className="glitch-img-wrap"
@@ -137,13 +156,10 @@ export default function About() {
                 onContextMenu={e => e.preventDefault()}
                 draggable={false}
               >
-                {/* NO <img> tag — image is CSS background only */}
                 <div className="profile-bg-layer" />
-                {/* glitch layers — same bg */}
                 <div className="glitch-layer gl-r" />
                 <div className="glitch-layer gl-b" />
                 <div className="glitch-scan" />
-                {/* transparent shield blocks drag & inspect overlay */}
                 <div className="img-shield" onContextMenu={e => e.preventDefault()} />
               </div>
             </div>
@@ -198,9 +214,7 @@ export default function About() {
             </div>
             <div className="stat">
               <div className="stat-num-wrap">
-                <span className="stat-num" ref={vcRef}>
-                  {visitorCount !== null ? visitorCount.toLocaleString() : '…'}
-                </span>
+                <span className="stat-num" ref={vcRef}>0</span>
                 <span className="stat-suffix">+</span>
               </div>
               <span className="stat-label"><span className="vc-live-dot" /> Visitors</span>
