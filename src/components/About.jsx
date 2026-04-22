@@ -12,10 +12,12 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkbW1ocWRhZ2hiZ2NwdHVqaG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NzczMTEsImV4cCI6MjA5MjQ1MzMxMX0.8gPA2M34Z0tOtjbUfQ85RbvO5m345zCM2gAkUx3y2BA'
 )
 
-function animateNum(el, from, to, duration = 2) {
+const BASE = 60467
+
+function countUp(el, from, to, duration = 2) {
   if (!el) return
+  gsap.killTweensOf({ v: 0 })
   const obj = { v: from }
-  gsap.killTweensOf(obj)
   gsap.to(obj, {
     v: to, duration, ease: 'power2.out',
     onUpdate() { if (el) el.textContent = Math.floor(obj.v).toLocaleString() }
@@ -23,91 +25,83 @@ function animateNum(el, from, to, duration = 2) {
 }
 
 export default function About() {
-  const visualRef    = useRef(null)
-  const textRef      = useRef(null)
-  const vcRef        = useRef(null)
-  const scrolledIn   = useRef(false)
-  const currentCount = useRef(0)
+  const visualRef  = useRef(null)
+  const textRef    = useRef(null)
+  const vcRef      = useRef(null)
+  const liveCount  = useRef(BASE)   // always holds latest count
+  const animated   = useRef(false)  // has scroll animation fired?
 
-  const [visitorCount, setVisitorCount] = useState(null)
+  // initialise from localStorage so no flicker
+  const [ready, setReady] = useState(false)
 
-  const updateCount = (newCount) => {
-    if (newCount === currentCount.current) return
-    const prev = currentCount.current
-    currentCount.current = newCount
-    setVisitorCount(newCount)
-    localStorage.setItem('rkg_visited', String(newCount))
-    // if section already visible, animate immediately
-    if (scrolledIn.current) {
-      animateNum(vcRef.current, prev, newCount)
-    }
-  }
-
-  // ── Supabase: increment + realtime + polling fallback ──
+  // ── run once: increment / fetch + subscribe realtime + poll ──
   useEffect(() => {
-    let channel
-    let pollInterval
+    let channel, poll
     const KEY = 'rkg_visited'
 
-    const fetchCount = async () => {
-      const { data } = await supabase
-        .from('visitors').select('count').eq('id', 1).single()
-      if (data && data.count !== currentCount.current) {
-        updateCount(data.count)
-      }
+    const applyCount = (n) => {
+      if (n === liveCount.current) return
+      const prev = liveCount.current
+      liveCount.current = n
+      localStorage.setItem(KEY, String(n))
+      setReady(true)
+      // if section already scrolled into view → animate live
+      if (animated.current) countUp(vcRef.current, prev, n, 1.5)
+      else vcRef.current && (vcRef.current.textContent = n.toLocaleString())
     }
 
-    const run = async () => {
+    const fetchLatest = async () => {
+      const { data } = await supabase
+        .from('visitors').select('count').eq('id', 1).single()
+      if (data) applyCount(data.count)
+    }
+
+    const init = async () => {
       const seen = localStorage.getItem(KEY)
+
+      // show stored value immediately — no blank/…
+      const stored = seen ? Number(seen) : BASE
+      liveCount.current = stored
+      if (vcRef.current) vcRef.current.textContent = stored.toLocaleString()
+      setReady(true)
 
       if (!seen) {
         // first visit — increment
         const { data } = await supabase.rpc('increment_visitors')
-        if (data != null) {
-          currentCount.current = data
-          setVisitorCount(data)
-          localStorage.setItem(KEY, String(data))
-        }
+        if (data != null) applyCount(data)
       } else {
-        // returning visitor — just fetch
-        await fetchCount()
+        await fetchLatest()
       }
 
-      // ── Realtime subscription ──
+      // realtime
       channel = supabase
-        .channel('visitors-live')
+        .channel('vc-live')
         .on('postgres_changes', {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'visitors',
-          filter: 'id=eq.1'
-        }, payload => {
-          updateCount(payload.new.count)
-        })
-        .subscribe((status) => {
-          console.log('Realtime status:', status)
-        })
+          event: 'UPDATE', schema: 'public',
+          table: 'visitors', filter: 'id=eq.1'
+        }, (payload) => applyCount(payload.new.count))
+        .subscribe()
 
-      // ── Polling fallback every 10s (in case realtime fails) ──
-      pollInterval = setInterval(fetchCount, 10000)
+      // poll every 8s as fallback
+      poll = setInterval(fetchLatest, 8000)
     }
 
-    run()
+    init()
     return () => {
       if (channel) supabase.removeChannel(channel)
-      if (pollInterval) clearInterval(pollInterval)
+      if (poll) clearInterval(poll)
     }
   }, [])
 
-  // ── Image protection ──
+  // ── image protection ──
   useEffect(() => {
-    const noContext = e => e.preventDefault()
-    const noDrag    = e => e.preventDefault()
-    document.addEventListener('contextmenu', noContext)
-    document.addEventListener('dragstart',   noDrag)
+    const nc = e => e.preventDefault()
+    const nd = e => e.preventDefault()
+    document.addEventListener('contextmenu', nc)
+    document.addEventListener('dragstart', nd)
     return () => {
-      document.removeEventListener('contextmenu', noContext)
-      document.removeEventListener('dragstart',   noDrag)
+      document.removeEventListener('contextmenu', nc)
+      document.removeEventListener('dragstart', nd)
     }
   }, [])
 
@@ -116,44 +110,38 @@ export default function About() {
     gsap.fromTo(visualRef.current,
       { x: -80, opacity: 0 },
       { scrollTrigger: { trigger: visualRef.current, start: 'top 75%' },
-        x: 0, opacity: 1, duration: 1.2, ease: 'power4.out' }
-    )
+        x: 0, opacity: 1, duration: 1.2, ease: 'power4.out' })
+
     gsap.fromTo(textRef.current.querySelectorAll('.anim'),
       { y: 40, opacity: 0 },
       { scrollTrigger: { trigger: textRef.current, start: 'top 70%' },
-        y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power4.out' }
-    )
+        y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power4.out' })
+
+    // other stat counters
     textRef.current.querySelectorAll('.stat-num[data-target]').forEach(el => {
       ScrollTrigger.create({
         trigger: el, start: 'top 85%', once: true,
         onEnter: () => {
-          const target = +el.dataset.target
-          const obj = { v: 0 }
-          gsap.to(obj, {
-            v: target, duration: 2, ease: 'power2.out',
-            onUpdate() { el.textContent = Math.floor(obj.v) }
-          })
+          const t = +el.dataset.target
+          const o = { v: 0 }
+          gsap.to(o, { v: t, duration: 2, ease: 'power2.out',
+            onUpdate() { el.textContent = Math.floor(o.v) } })
         }
       })
     })
-  }, [])
 
-  // ── Visitor counter scroll trigger ──
-  useEffect(() => {
-    if (visitorCount === null) return
-    const st = ScrollTrigger.create({
+    // visitor counter — animate from BASE to real count on scroll
+    ScrollTrigger.create({
       trigger: vcRef.current,
       start: 'top 85%',
       once: true,
       onEnter: () => {
-        scrolledIn.current = true
-        const target = currentCount.current
-        const from = Math.max(0, target - 200) // animate from near the real number
-        animateNum(vcRef.current, from, target)
+        animated.current = true
+        const target = liveCount.current
+        countUp(vcRef.current, BASE, target, 2)
       }
     })
-    return () => st.kill()
-  }, [visitorCount !== null])
+  }, [])
 
   return (
     <section className="about section" id="about">
@@ -226,7 +214,7 @@ export default function About() {
             </div>
             <div className="stat">
               <div className="stat-num-wrap">
-                <span className="stat-num" ref={vcRef}>{visitorCount !== null ? visitorCount.toLocaleString() : '…'}</span>
+                <span className="stat-num" ref={vcRef}>{BASE.toLocaleString()}</span>
                 <span className="stat-suffix">+</span>
               </div>
               <span className="stat-label"><span className="vc-live-dot" /> Visitors</span>
