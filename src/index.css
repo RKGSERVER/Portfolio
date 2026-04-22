@@ -19,7 +19,12 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+}
+
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -27,11 +32,15 @@ body {
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
-  overflow-x: hidden;
   overflow-y: scroll;
   cursor: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* scrollbar — hidden but scroll still works */
