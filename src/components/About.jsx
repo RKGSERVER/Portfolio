@@ -12,79 +12,94 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxkbW1ocWRhZ2hiZ2NwdHVqaG96Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NzczMTEsImV4cCI6MjA5MjQ1MzMxMX0.8gPA2M34Z0tOtjbUfQ85RbvO5m345zCM2gAkUx3y2BA'
 )
 
-// animate a number from → to inside a DOM element
 function animateNum(el, from, to, duration = 2) {
   if (!el) return
   const obj = { v: from }
+  gsap.killTweensOf(obj)
   gsap.to(obj, {
     v: to, duration, ease: 'power2.out',
-    onUpdate() { el.textContent = Math.floor(obj.v).toLocaleString() }
+    onUpdate() { if (el) el.textContent = Math.floor(obj.v).toLocaleString() }
   })
 }
 
 export default function About() {
   const visualRef    = useRef(null)
   const textRef      = useRef(null)
-  const vcRef        = useRef(null)          // ref to visitor <span>
-  const scrolledIn   = useRef(false)         // has section scrolled into view?
-  const pendingCount = useRef(null)          // count received before scroll
+  const vcRef        = useRef(null)
+  const scrolledIn   = useRef(false)
+  const currentCount = useRef(0)
 
-  const [visitorCount, setVisitorCount] = useState(() => {
-    const s = localStorage.getItem('rkg_visited')
-    return s ? Number(s) : null
-  })
+  const [visitorCount, setVisitorCount] = useState(null)
 
-  // ── 1. Supabase: increment once, then subscribe realtime ──────────────────
+  const updateCount = (newCount) => {
+    if (newCount === currentCount.current) return
+    const prev = currentCount.current
+    currentCount.current = newCount
+    setVisitorCount(newCount)
+    localStorage.setItem('rkg_visited', String(newCount))
+    // if section already visible, animate immediately
+    if (scrolledIn.current) {
+      animateNum(vcRef.current, prev, newCount)
+    }
+  }
+
+  // ── Supabase: increment + realtime + polling fallback ──
   useEffect(() => {
     let channel
+    let pollInterval
     const KEY = 'rkg_visited'
+
+    const fetchCount = async () => {
+      const { data } = await supabase
+        .from('visitors').select('count').eq('id', 1).single()
+      if (data && data.count !== currentCount.current) {
+        updateCount(data.count)
+      }
+    }
 
     const run = async () => {
       const seen = localStorage.getItem(KEY)
 
       if (!seen) {
+        // first visit — increment
         const { data } = await supabase.rpc('increment_visitors')
         if (data != null) {
+          currentCount.current = data
           setVisitorCount(data)
           localStorage.setItem(KEY, String(data))
         }
       } else {
-        const { data } = await supabase
-          .from('visitors').select('count').eq('id', 1).single()
-        if (data) {
-          setVisitorCount(data.count)
-          localStorage.setItem(KEY, String(data.count))
-        }
+        // returning visitor — just fetch
+        await fetchCount()
       }
 
-      // realtime — another device just visited
+      // ── Realtime subscription ──
       channel = supabase
-        .channel('visitors-realtime')
+        .channel('visitors-live')
         .on('postgres_changes', {
-          event: 'UPDATE', schema: 'public',
-          table: 'visitors', filter: 'id=eq.1'
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'visitors',
+          filter: 'id=eq.1'
         }, payload => {
-          const newCount = payload.new.count
-          localStorage.setItem(KEY, String(newCount))
-          setVisitorCount(prev => {
-            if (scrolledIn.current) {
-              // section visible — animate immediately
-              animateNum(vcRef.current, prev ?? newCount, newCount)
-            } else {
-              // section not visible yet — store for later
-              pendingCount.current = newCount
-            }
-            return newCount
-          })
+          updateCount(payload.new.count)
         })
-        .subscribe()
+        .subscribe((status) => {
+          console.log('Realtime status:', status)
+        })
+
+      // ── Polling fallback every 10s (in case realtime fails) ──
+      pollInterval = setInterval(fetchCount, 10000)
     }
 
     run()
-    return () => { if (channel) supabase.removeChannel(channel) }
+    return () => {
+      if (channel) supabase.removeChannel(channel)
+      if (pollInterval) clearInterval(pollInterval)
+    }
   }, [])
 
-  // ── 2. Image protection ───────────────────────────────────────────────────
+  // ── Image protection ──
   useEffect(() => {
     const noContext = e => e.preventDefault()
     const noDrag    = e => e.preventDefault()
@@ -96,7 +111,7 @@ export default function About() {
     }
   }, [])
 
-  // ── 3. GSAP scroll animations ─────────────────────────────────────────────
+  // ── GSAP scroll animations ──
   useEffect(() => {
     gsap.fromTo(visualRef.current,
       { x: -80, opacity: 0 },
@@ -108,8 +123,6 @@ export default function About() {
       { scrollTrigger: { trigger: textRef.current, start: 'top 70%' },
         y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power4.out' }
     )
-
-    // other stat counters
     textRef.current.querySelectorAll('.stat-num[data-target]').forEach(el => {
       ScrollTrigger.create({
         trigger: el, start: 'top 85%', once: true,
@@ -125,23 +138,20 @@ export default function About() {
     })
   }, [])
 
-  // ── 4. Visitor counter scroll trigger — animate when section enters view ──
+  // ── Visitor counter scroll trigger ──
   useEffect(() => {
     if (visitorCount === null) return
-    const trigger = ScrollTrigger.create({
+    const st = ScrollTrigger.create({
       trigger: vcRef.current,
       start: 'top 85%',
       once: true,
       onEnter: () => {
         scrolledIn.current = true
-        // animate from 0 to current count
-        const target = pendingCount.current ?? visitorCount
-        pendingCount.current = null
-        animateNum(vcRef.current, 0, target)
+        animateNum(vcRef.current, 0, currentCount.current)
       }
     })
-    return () => trigger.kill()
-  }, [visitorCount])
+    return () => st.kill()
+  }, [visitorCount !== null])
 
   return (
     <section className="about section" id="about">
