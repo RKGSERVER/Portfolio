@@ -1,6 +1,6 @@
 .footer {
   border-top: 1px solid var(--border2);
-  overflow: visible;
+  overflow: hidden;
   background: var(--bg);
 }
 
@@ -60,7 +60,7 @@
   display: flex; align-items: center; justify-content: space-between;
   padding: 36px 5%; flex-wrap: wrap; gap: 24px;
   border-top: 1px solid var(--border2);
-  overflow: visible;
+  overflow: hidden;
 }
 .footer-logo {
   font-family: var(--font-head);
