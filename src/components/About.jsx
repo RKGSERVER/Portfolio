@@ -11,15 +11,7 @@ const BASE_COUNT = 60467
 export default function About() {
   const visualRef = useRef(null)
   const textRef = useRef(null)
-  const [visitorCount, setVisitorCount] = useState(null)
-
-  useEffect(() => {
-    // ── Real visitor counter via CounterAPI ──
-    fetch('https://api.counterapi.dev/v1/rozariorajkumar/portfolio-visitors/up')
-      .then(r => r.json())
-      .then(data => setVisitorCount(BASE_COUNT + (data.count ?? 0)))
-      .catch(() => setVisitorCount(BASE_COUNT))
-  }, [])
+  const [visitorCount] = useState(BASE_COUNT)
 
   useEffect(() => {
     // ── Image protection — disable right-click & drag on entire page ──
@@ -138,7 +130,7 @@ export default function About() {
             <div className="stat">
               <div className="stat-num-wrap">
                 <span className="stat-num">
-                  {visitorCount !== null ? visitorCount.toLocaleString() : '…'}
+                  {visitorCount.toLocaleString()}
                 </span>
                 <span className="stat-suffix">+</span>
               </div>

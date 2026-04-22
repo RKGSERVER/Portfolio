@@ -1,16 +1,17 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+const ts = Date.now()
+
 export default defineConfig({
   plugins: [react()],
   base: '/',
   build: {
-    // unique hash in every filename — forces browser to fetch fresh on every deploy
     rollupOptions: {
       output: {
-        entryFileNames:  'assets/[name]-[hash].js',
-        chunkFileNames:  'assets/[name]-[hash].js',
-        assetFileNames:  'assets/[name]-[hash][extname]',
+        entryFileNames:  `assets/[name]-[hash]-${ts}.js`,
+        chunkFileNames:  `assets/[name]-[hash]-${ts}.js`,
+        assetFileNames:  `assets/[name]-[hash]-${ts}[extname]`,
       }
     }
   }
