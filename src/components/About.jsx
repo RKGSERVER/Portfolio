@@ -147,7 +147,9 @@ export default function About() {
       once: true,
       onEnter: () => {
         scrolledIn.current = true
-        animateNum(vcRef.current, 0, currentCount.current)
+        const target = currentCount.current
+        const from = Math.max(0, target - 200) // animate from near the real number
+        animateNum(vcRef.current, from, target)
       }
     })
     return () => st.kill()
@@ -224,7 +226,7 @@ export default function About() {
             </div>
             <div className="stat">
               <div className="stat-num-wrap">
-                <span className="stat-num" ref={vcRef}>0</span>
+                <span className="stat-num" ref={vcRef}>{visitorCount !== null ? visitorCount.toLocaleString() : '…'}</span>
                 <span className="stat-suffix">+</span>
               </div>
               <span className="stat-label"><span className="vc-live-dot" /> Visitors</span>
