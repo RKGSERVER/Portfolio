@@ -90,33 +90,29 @@ export default function Contact() {
     })
   }, [])
 
-  /* ── form submit via FormSubmit (direct POST) ── */
+  /* ── form submit via FormSubmit ── */
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus("sending")
     const data = new FormData(formRef.current)
     try {
-      const res = await fetch("https://formsubmit.co/rozario9913@gmail.com", {
+      await fetch("https://formsubmit.co/rozario9913@gmail.com", {
         method: "POST",
-        headers: { Accept: "application/json" },
         body: data,
+        mode: "no-cors", // bypass CORS — FormSubmit doesn't need response
       })
-      if (res.ok || res.status === 200) {
-        setStatus("sent")
-        formRef.current.reset()
-        setMsgLen(0)
-        gsap.fromTo(".contact-form",
-          { boxShadow: "0 0 0 2px rgba(0,220,130,0)" },
-          { boxShadow: "0 0 0 2px rgba(0,220,130,0.35)", duration: 0.4, yoyo: true, repeat: 1 }
-        )
-        setTimeout(() => setStatus("idle"), 4000)
-      } else {
-        setStatus("error")
-        gsap.fromTo(".contact-form", { x: -8 }, { x: 0, duration: 0.5, ease: "elastic.out(1,0.3)" })
-        setTimeout(() => setStatus("idle"), 4000)
-      }
+      // no-cors means we can't read response, but submission goes through
+      setStatus("sent")
+      formRef.current.reset()
+      setMsgLen(0)
+      gsap.fromTo(".contact-form",
+        { boxShadow: "0 0 0 2px rgba(0,220,130,0)" },
+        { boxShadow: "0 0 0 2px rgba(0,220,130,0.35)", duration: 0.4, yoyo: true, repeat: 1 }
+      )
+      setTimeout(() => setStatus("idle"), 4000)
     } catch {
       setStatus("error")
+      gsap.fromTo(".contact-form", { x: -8 }, { x: 0, duration: 0.5, ease: "elastic.out(1,0.3)" })
       setTimeout(() => setStatus("idle"), 4000)
     }
   }
