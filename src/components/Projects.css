@@ -40,7 +40,15 @@
 .proj-dots { display: flex; gap: 5px; }
 .proj-dots span {
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--border2);
+  background: var(--proj-color, var(--accent));
+  animation: serverBlink 1.4s ease infinite;
+}
+.proj-dots span:nth-child(1) { animation-delay: 0s; }
+.proj-dots span:nth-child(2) { animation-delay: 0.25s; }
+.proj-dots span:nth-child(3) { animation-delay: 0.5s; }
+@keyframes serverBlink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--proj-color, var(--accent)); }
+  50%       { opacity: 0.15; box-shadow: none; }
 }
 .proj-title {
   font-family: var(--font-head); font-size: 2rem;

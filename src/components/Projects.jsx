@@ -116,8 +116,7 @@ export default function Projects() {
             <div className="proj-card-top">
               <span className="proj-tag">{proj.tag}</span>
               <div className="proj-dots">
-                <span style={{ background: proj.color }} />
-                <span /><span />
+                <span /><span /><span />
               </div>
             </div>
             <h3 className="proj-title">{proj.title}</h3>
