@@ -15,6 +15,13 @@ export default function Hero() {
   useEffect(() => {
     const canvas = canvasRef.current
 
+    // disable Three.js on mobile — too heavy
+    const isMobile = window.innerWidth <= 768
+    if (isMobile) {
+      canvas.style.display = 'none'
+      return
+    }
+
     const renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: false,

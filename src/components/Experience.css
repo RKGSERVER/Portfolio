@@ -345,3 +345,19 @@
   .tech-item { width: 68px; }
   .tech-icon-wrap { width: 30px; height: 30px; }
 }
+
+/* ── Extra mobile fixes ── */
+@media (max-width: 480px) {
+  .exp-header { margin-bottom: 32px; }
+  .timeline-spine { display: none; }
+  .tl-item { padding-left: 0 !important; }
+  .tl-dot { display: none; }
+  .tl-card { margin-bottom: 12px; }
+  .lyrics-section { padding: 0; }
+  .lyric-card { padding: 20px 14px; }
+  .lyric-line { font-size: 0.82rem; line-height: 2; }
+  .achievements-section { margin-top: 40px; }
+  .achieve-grid { grid-template-columns: 1fr; gap: 12px; }
+  .tech-grid { gap: 8px; justify-content: center; }
+  .sub-section-header { margin-bottom: 28px; }
+}

@@ -82,8 +82,8 @@ export default function About() {
         }, (payload) => applyCount(payload.new.count))
         .subscribe()
 
-      // poll every 8s as fallback
-      poll = setInterval(fetchLatest, 8000)
+      // poll every 30s as fallback (reduced from 8s for performance)
+      poll = setInterval(fetchLatest, 30000)
     }
 
     init()
