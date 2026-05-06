@@ -217,7 +217,6 @@ export default function Hero() {
       </div>
 
       <div className="hero-side-text" aria-hidden="true">SCROLL TO EXPLORE</div>
-      <div className="scroll-mouse"><div className="scroll-wheel" /></div>
     </section>
   )
 }
