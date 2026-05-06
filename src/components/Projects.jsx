@@ -156,7 +156,7 @@ export default function Projects() {
 
               {/* left: close only */}
               <div className="proj-win-left">
-                <button className="pwc pwc-close" onClick={closeProject} title="Close">
+                <button className="pwc pwc-close" onClick={closeProject}>
                   <svg width="7" height="7" viewBox="0 0 10 10">
                     <path d="M1 1l8 8M9 1l-8 8" stroke="#5a0000" strokeWidth="1.8" strokeLinecap="round"/>
                   </svg>
@@ -169,7 +169,7 @@ export default function Projects() {
               {/* right: resize + open in new tab */}
               <div className="proj-win-right">
                 {/* resize toggle */}
-                <button className="proj-win-resize" onClick={() => setBig(b => !b)} title={big ? 'Shrink' : 'Expand'}>
+                <button className="proj-win-resize" onClick={() => setBig(b => !b)}>
                   {big ? (
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
                       <path d="M8 3v5H3M21 8h-5V3M16 21v-5h5M3 16h5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -181,7 +181,7 @@ export default function Projects() {
                   )}
                 </button>
                 {/* open in new tab */}
-                <a className="proj-win-newtab" href={active.preview} target="_blank" rel="noreferrer" title="Open in new tab">
+                <a className="proj-win-newtab" href={active.preview} target="_blank" rel="noreferrer">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
                     <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M15 3h6v6M10 14L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
