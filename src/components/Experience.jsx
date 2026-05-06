@@ -1,10 +1,10 @@
-
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Experience.css'
 
-// ── Tech stack — PNG images from devicons CDN ───────────────────────────────
+gsap.registerPlugin(ScrollTrigger)
+
 const techStack = [
   { name: 'C',          img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg' },
   { name: 'C++',        img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg' },
@@ -13,128 +13,169 @@ const techStack = [
   { name: 'HTML5',      img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg' },
   { name: 'CSS3',       img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg' },
   { name: 'JavaScript', img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg' },
+  { name: 'React',      img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
+  { name: 'Node.js',    img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg' },
   { name: 'MySQL',      img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg' },
   { name: 'Git',        img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg' },
   { name: 'VS Code',    img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg' },
-  { name: 'Node.js',    img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg' },
   { name: 'Linux',      img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg' },
-  { name: 'React',      img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
   { name: 'PHP',        img: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg' },
 ]
 
-// ── Achievements data ────────────────────────────────────────────────────────
 const achievements = [
-  { icon: '🎓', title: 'BCA 3rd Year', desc: 'Pursuing Bachelor of Computer Applications with consistent academic performance.', tag: 'Education' },
-  { icon: '📊', title: 'Certified Digital Marketer', desc: 'Holds a certified Digital Marketing certificate — SEO, social media, content strategy and online branding.', tag: 'Certificate' },
-  { icon: '💻', title: 'Full Stack Projects', desc: 'Built and deployed multiple web applications using modern tech stacks.', tag: 'Development' },
-  { icon: '🏆', title: 'Python Competition', desc: 'Secured 2nd position on Competition, solving real-world problems under pressure.', tag: 'Competition' },
-  { icon: '🎵', title: '38+ Lyrics Written', desc: 'Crafted over 32 original lyric pieces — storytelling through every bar.', tag: 'Music' },
-  { icon: '📚', title: '6+ Languages Learned', desc: 'Mastered C, C++, Java, Python, React, Node, Express, HTML/CSS, JavaScript across 3 years.', tag: 'Skills' },
-  { icon: '🚀', title: 'Self-Taught Artist', desc: 'Independently developing music artistry alongside a full-time degree.', tag: 'Growth' },
-  { icon: '🛠️', title: '3+ Projects Done', desc: 'Designed, built and shipped 3+ real-world projects — from concept to deployment.', tag: 'Projects' },
+  { icon: '🎓', title: 'BCA 3rd Year',             desc: 'Pursuing Bachelor of Computer Applications with consistent academic performance.',                                    tag: 'Education'   },
+  { icon: '📊', title: 'Certified Digital Marketer',desc: 'Certified in Digital Marketing — SEO, social media, content strategy and online branding.',                         tag: 'Certificate' },
+  { icon: '🎨', title: 'Certified UI/UX Designer',  desc: 'Certified in UI/UX Design — wireframes, prototypes, design systems and user-first experiences.',                     tag: 'Certificate' },
+  { icon: '💻', title: 'Full Stack Projects',        desc: 'Built and deployed multiple web applications using modern tech stacks.',                                             tag: 'Development' },
+  { icon: '🏆', title: 'Python Competition',         desc: 'Secured 2nd position in a competition, solving real-world problems under pressure.',                                 tag: 'Competition' },
+  { icon: '🎵', title: '38+ Lyrics Written',         desc: 'Crafted over 38 original lyric pieces — storytelling through every bar.',                                           tag: 'Music'       },
+  { icon: '📚', title: '6+ Languages Learned',       desc: 'Mastered C, C++, Java, Python, React, Node, Express, HTML/CSS, JavaScript across 3 years.',                        tag: 'Skills'      },
+  { icon: '🚀', title: 'Self-Taught Artist',         desc: 'Independently developing music artistry alongside a full-time degree.',                                              tag: 'Growth'      },
+]
+
+// Timeline rows: [leftCard, dotVariant, rightCard]
+// null = empty side
+const timelineRows = [
+  {
+    left:  { tag: 'Ongoing',     tagClass: 'active-tag', title: 'BCA — Bachelor of Computer Applications', body: '3rd year student mastering software development, data structures, databases, and system design.', cardClass: '' },
+    dot:   'pulse',
+    right: { tag: 'The Beginning', tagClass: '', title: 'Found My Voice', body: 'Started writing lyrics — discovering style, flow, and storytelling. Every great artist starts with a blank page.', cardClass: '' },
+  },
+  {
+    left:  { tag: 'Projects', tagClass: '', title: 'Web & Software Projects', body: 'Built multiple projects using HTML/CSS/JS, Java, Python, React, Node, Express — always pushing the creative boundary.', cardClass: '' },
+    dot:   'green',
+    right: { tag: '● Live Now', tagClass: 'live', title: 'Deep in the Writing Phase', body: 'Building a catalog of original lyrics. Music production is in progress — the composer is being found, the sound is being shaped.', cardClass: 'active' },
+  },
+  {
+    left:  { tag: 'Certified', tagClass: 'active-tag', title: 'Digital Marketer & UI/UX Designer', body: 'Dual certified — bridging the gap between brand strategy and user experience design.', cardClass: '' },
+    dot:   'orange',
+    right: { tag: 'Coming Soon 🔥', tagClass: 'soon', title: 'First Drop', body: 'When the beat meets the bars — the world will hear it. Stay locked in.', cardClass: 'upcoming' },
+  },
 ]
 
 export default function Experience() {
-  const gridRef = useRef(null)
-  const lyricRef = useRef(null)
-  const achieveRef = useRef(null)
-  const techRef = useRef(null)
+  const sectionRef  = useRef(null)
+  const timelineRef = useRef(null)
+  const lyricRef    = useRef(null)
+  const achieveRef  = useRef(null)
+  const techRef     = useRef(null)
 
   useEffect(() => {
-    // timeline cards
-    gsap.fromTo(gridRef.current.querySelectorAll('[data-side="left"]'),
-      { x: -60, opacity: 0 },
-      { scrollTrigger: { trigger: gridRef.current, start: 'top 70%' },
-        x: 0, opacity: 1, duration: 0.9, stagger: 0.2, ease: 'power4.out' }
-    )
-    gsap.fromTo(gridRef.current.querySelectorAll('[data-side="right"]'),
-      { x: 60, opacity: 0 },
-      { scrollTrigger: { trigger: gridRef.current, start: 'top 70%' },
-        x: 0, opacity: 1, duration: 0.9, stagger: 0.2, ease: 'power4.out' }
-    )
+    const ctx = gsap.context(() => {
 
-    // lyric lines
-    ScrollTrigger.create({
-      trigger: lyricRef.current, start: 'top 75%', once: true,
-      onEnter: () => {
-        lyricRef.current.querySelectorAll('.lyric-line').forEach((l, i) => {
-          setTimeout(() => l.classList.add('visible'), i * 350)
-        })
-      }
-    })
+      // ── spine draw animation ──
+      gsap.fromTo('.timeline-spine',
+        { scaleY: 0, transformOrigin: 'top center' },
+        { scrollTrigger: { trigger: timelineRef.current, start: 'top 75%' },
+          scaleY: 1, duration: 1.4, ease: 'power3.out' }
+      )
 
-    // achievement cards
-    gsap.fromTo(achieveRef.current.querySelectorAll('.achieve-card'),
-      { y: 50, opacity: 0 },
-      { scrollTrigger: { trigger: achieveRef.current, start: 'top 75%' },
-        y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power4.out' }
-    )
+      // ── timeline rows stagger ──
+      gsap.fromTo('.tl-row',
+        { opacity: 0, y: 40 },
+        { scrollTrigger: { trigger: timelineRef.current, start: 'top 72%' },
+          opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: 'power4.out' }
+      )
 
-    // tech icons
-    gsap.fromTo(techRef.current.querySelectorAll('.tech-item'),
-      { scale: 0.6, opacity: 0 },
-      { scrollTrigger: { trigger: techRef.current, start: 'top 80%' },
-        scale: 1, opacity: 1, duration: 0.5, stagger: 0.06, ease: 'back.out(1.7)' }
-    )
+      // ── left cards slide from left ──
+      gsap.fromTo('.tl-card-wrap:not(.right):not(.empty) .tl-card',
+        { x: -40, opacity: 0 },
+        { scrollTrigger: { trigger: timelineRef.current, start: 'top 70%' },
+          x: 0, opacity: 1, duration: 0.9, stagger: 0.2, ease: 'power4.out', delay: 0.1 }
+      )
+
+      // ── right cards slide from right ──
+      gsap.fromTo('.tl-card-wrap.right .tl-card',
+        { x: 40, opacity: 0 },
+        { scrollTrigger: { trigger: timelineRef.current, start: 'top 70%' },
+          x: 0, opacity: 1, duration: 0.9, stagger: 0.2, ease: 'power4.out', delay: 0.1 }
+      )
+
+      // ── dots pop in ──
+      gsap.fromTo('.tl-dot',
+        { scale: 0, opacity: 0 },
+        { scrollTrigger: { trigger: timelineRef.current, start: 'top 72%' },
+          scale: 1, opacity: 1, duration: 0.5, stagger: 0.2, ease: 'back.out(2)', delay: 0.3 }
+      )
+
+      // ── lyric lines ──
+      ScrollTrigger.create({
+        trigger: lyricRef.current, start: 'top 75%', once: true,
+        onEnter: () => {
+          lyricRef.current.querySelectorAll('.lyric-line').forEach((l, i) => {
+            setTimeout(() => l.classList.add('visible'), i * 300)
+          })
+        }
+      })
+
+      // ── achievement cards ──
+      gsap.fromTo(achieveRef.current.querySelectorAll('.achieve-card'),
+        { y: 50, opacity: 0 },
+        { scrollTrigger: { trigger: achieveRef.current, start: 'top 75%' },
+          y: 0, opacity: 1, duration: 0.7, stagger: 0.08, ease: 'power4.out' }
+      )
+
+      // ── tech icons spring in ──
+      gsap.fromTo(techRef.current.querySelectorAll('.tech-item'),
+        { scale: 0.5, opacity: 0 },
+        { scrollTrigger: { trigger: techRef.current, start: 'top 80%' },
+          scale: 1, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'back.out(1.7)' }
+      )
+
+    }, sectionRef)
+
+    return () => ctx.revert()
   }, [])
 
   return (
-    <section className="experience section" id="experience">
+    <section ref={sectionRef} className="experience section" id="experience">
       <div className="section-num">03</div>
 
-      {/* ── Timeline ── */}
       <div className="exp-header">
         <p className="section-eyebrow">My Journey</p>
         <h2 className="section-title">Experience</h2>
       </div>
 
-      <div ref={gridRef} className="exp-grid">
-        <div className="exp-col">
-          <div className="exp-col-label"><i className="fas fa-laptop-code" /> Tech</div>
-          <div className="exp-item" data-side="left">
-            <div className="exp-card">
-              <span className="exp-tag">Ongoing</span>
-              <h3>BCA — Bachelor of Computer Applications</h3>
-              <p>3rd year student mastering software development, data structures, databases, and system design.</p>
-            </div>
-          </div>
-          <div className="exp-item" data-side="left">
-            <div className="exp-card">
-              <span className="exp-tag">Projects</span>
-              <h3>Web &amp; Software Projects</h3>
-              <p>Built multiple projects using HTML/CSS/JS, Java, Python, React, Node, Express — always pushing the creative boundary.</p>
-            </div>
-          </div>
+      {/* ── Vertical Timeline ── */}
+      <div ref={timelineRef} className="timeline-wrap">
+        <div className="timeline-spine" />
+
+        {/* category labels */}
+        <div className="timeline-cats">
+          <div className="timeline-cat"><i className="fas fa-laptop-code" /> Tech</div>
+          <div className="timeline-cat right"><i className="fas fa-music" /> Music</div>
         </div>
 
-        <div className="exp-center-line">
-          <div className="exp-center-dot pulse" />
-        </div>
+        {timelineRows.map((row, i) => (
+          <div key={i} className="tl-row">
+            {/* left card */}
+            <div className={`tl-card-wrap${!row.left ? ' empty' : ''}`}>
+              {row.left && (
+                <div className={`tl-card ${row.left.cardClass}`}>
+                  <span className={`tl-tag ${row.left.tagClass}`}>{row.left.tag}</span>
+                  <h3>{row.left.title}</h3>
+                  <p>{row.left.body}</p>
+                </div>
+              )}
+            </div>
 
-        <div className="exp-col">
-          <div className="exp-col-label"><i className="fas fa-music" /> Music</div>
-          <div className="exp-item" data-side="right">
-            <div className="exp-card">
-              <span className="exp-tag">The Beginning</span>
-              <h3>Found My Voice</h3>
-              <p>Started writing lyrics — discovering style, flow, and storytelling. Every great artist starts with a blank page.</p>
+            {/* center node */}
+            <div className="tl-node">
+              <div className={`tl-dot ${row.dot}`} />
+            </div>
+
+            {/* right card */}
+            <div className={`tl-card-wrap right${!row.right ? ' empty' : ''}`}>
+              {row.right && (
+                <div className={`tl-card ${row.right.cardClass}`}>
+                  <span className={`tl-tag ${row.right.tagClass}`}>{row.right.tag}</span>
+                  <h3>{row.right.title}</h3>
+                  <p>{row.right.body}</p>
+                </div>
+              )}
             </div>
           </div>
-          <div className="exp-item" data-side="right">
-            <div className="exp-card active-card">
-              <span className="exp-tag live">● Live Now</span>
-              <h3>Deep in the Writing Phase</h3>
-              <p>Building a catalog of original lyrics. Music production is in progress — the composer is being found, the sound is being shaped.</p>
-            </div>
-          </div>
-          <div className="exp-item" data-side="right">
-            <div className="exp-card upcoming-card">
-              <span className="exp-tag soon">Coming Soon 🔥</span>
-              <h3>First Drop</h3>
-              <p>When the beat meets the bars — the world will hear it. Stay locked in.</p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* ── Lyrics ── */}
@@ -184,19 +225,15 @@ export default function Experience() {
           {techStack.map((t, i) => (
             <div key={i} className="tech-item" title={t.name}>
               <div className="tech-icon-wrap">
-                <img
-                  src={t.img}
-                  alt={t.name}
-                  loading="lazy"
-                  draggable={false}
-                  onContextMenu={e => e.preventDefault()}
-                />
+                <img src={t.img} alt={t.name} loading="lazy"
+                  draggable={false} onContextMenu={e => e.preventDefault()} />
               </div>
               <span className="tech-name">{t.name}</span>
             </div>
           ))}
         </div>
       </div>
+
     </section>
   )
 }

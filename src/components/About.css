@@ -141,9 +141,10 @@
 .orbit-dot { fill: var(--accent); r: 8; }
 @keyframes orbitSpin { to { transform: rotate(360deg); } }
 
-.floating-chips { position: absolute; inset: 0; }
+.floating-chips { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
 .chip {
   position: absolute;
+  pointer-events: auto;
   background: rgba(15,15,15,0.95);
   border: 1px solid rgba(255,60,0,0.35);
   padding: 10px 18px;
@@ -158,11 +159,46 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 .chip i { color: var(--accent); font-size: 0.85rem; }
-.c1 { top: 10px;  left: 0px;  animation: chipFloat 4s ease infinite 0s; }
-.c2 { top: 10px;  right: 0px; animation: chipFloat 4s ease infinite 1s; }
-.c3 { bottom: 10px; left: 0px;  animation: chipFloat 4s ease infinite 2s; }
-.c4 { bottom: 10px; right: 0px; animation: chipFloat 4s ease infinite 3s; }
-@keyframes chipFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+
+/* 5 chips evenly spaced around the orbit circle (r=170, centre=190,190 on a 380×380 wrap)
+   angle = -90° + n*72°  →  x = 190 + 170*cos(a),  y = 190 + 170*sin(a)
+   We use % so it scales with the wrap size.
+   translate(-50%,-50%) centres each chip on its point.                        */
+
+/* c1 — top        (-90°)  x=190  y=20  → 50% / 5.26% */
+.c1 {
+  top: 5.26%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: chipFloat 4s ease infinite 0s;
+}
+/* c2 — top-right  (-18°)  x=352  y=137 → 92.6% / 36.1% */
+.c2 {
+  top: 36.1%; left: 92.6%;
+  transform: translate(-50%, -50%);
+  animation: chipFloat 4s ease infinite 0.8s;
+}
+/* c3 — bottom-right (54°) x=290  y=328 → 76.3% / 86.3% */
+.c3 {
+  top: 86.3%; left: 76.3%;
+  transform: translate(-50%, -50%);
+  animation: chipFloat 4s ease infinite 1.6s;
+}
+/* c4 — bottom-left (126°) x=90   y=328 → 23.7% / 86.3% */
+.c4 {
+  top: 86.3%; left: 23.7%;
+  transform: translate(-50%, -50%);
+  animation: chipFloat 4s ease infinite 2.4s;
+}
+/* c5 — top-left   (198°)  x=28   y=137 → 7.4% / 36.1% */
+.c5 {
+  top: 36.1%; left: 7.4%;
+  transform: translate(-50%, -50%);
+  animation: chipFloat 4s ease infinite 3.2s;
+}
+@keyframes chipFloat {
+  0%,100% { transform: translate(-50%, -50%) translateY(0px); }
+  50%      { transform: translate(-50%, -50%) translateY(-10px); }
+}
 
 .about-para { color: #c0c0c0; line-height: 1.9; margin-bottom: 22px; font-size: 1.08rem; font-weight: 400; }
 .about-stats {
@@ -205,23 +241,31 @@
   .about-stats { flex-wrap: wrap; gap: 28px; }
 }
 
+@media (max-width: 768px) {
+  .about-grid { gap: 80px; }
+  .avatar-wrap { width: 300px; height: 300px; }
+  .avatar-hex { width: 220px; height: 220px; }
+  .about-para { font-size: 1rem; }
+}
+
 /* ── ABOUT MOBILE ── */
 @media (max-width: 480px) {
-  .about-grid { grid-template-columns: 1fr; gap: 60px; }
-  .avatar-wrap { width: 300px; height: 300px; }
+  .about-grid { grid-template-columns: 1fr; gap: 80px; }
+  .avatar-wrap { width: 280px; height: 280px; }
   .avatar-hex { width: 200px; height: 200px; }
-  .about-visual { overflow: hidden; }
-  .floating-chips { overflow: hidden; }
-  .chip { font-size: 0.78rem; padding: 7px 12px; gap: 5px; }
-  .c1 { top: 20px;  left: 0px; }
-  .c2 { top: 20px;  right: 0px; }
-  .c3 { bottom: 20px; left: 0px; }
-  .c4 { bottom: 20px; right: 0px; }
-  .about-para { font-size: 0.98rem; }
-  .about-stats { gap: 20px; }
-  .stat-num { font-size: 2.6rem; }
-  .stat-suffix { font-size: 1.4rem; }
-  .stat-label { font-size: 0.82rem; }
+  .about-visual { overflow: visible; }
+  .floating-chips { overflow: visible; }
+  .chip { font-size: 0.72rem; padding: 6px 10px; gap: 4px; }
+  .c1 { top: 5.26%;  left: 50%; }
+  .c2 { top: 36.1%;  left: 92.6%; }
+  .c3 { top: 86.3%;  left: 76.3%; }
+  .c4 { top: 86.3%;  left: 23.7%; }
+  .c5 { top: 36.1%;  left: 7.4%; }
+  .about-para { font-size: 0.95rem; }
+  .about-stats { gap: 16px; margin-top: 36px; padding-top: 28px; }
+  .stat-num { font-size: 2.4rem; }
+  .stat-suffix { font-size: 1.2rem; }
+  .stat-label { font-size: 0.78rem; }
 }
 
 /* ── Live dot on Visitors label ── */

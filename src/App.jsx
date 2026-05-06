@@ -7,6 +7,7 @@ import Cursor from './components/Cursor'
 import Loader from './components/Loader'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import MarqueeBanner from './components/MarqueeBanner'
 import About from './components/About'
 import Skills from './components/Skills'
 import Experience from './components/Experience'
@@ -39,6 +40,7 @@ export default function App() {
       <Navbar />
       <main style={{ overflowX: 'hidden', width: '100%' }}>
         <Hero />
+        <MarqueeBanner />
         <About />
         <Skills />
         <Experience />

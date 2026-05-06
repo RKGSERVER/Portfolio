@@ -170,8 +170,9 @@ export default function About() {
             <div className="floating-chips">
               <div className="chip c1"><i className="fas fa-code" /> BCA</div>
               <div className="chip c2"><i className="fas fa-music" /> Artist</div>
-              <div className="chip c3"><i className="fas fa-pen" /> Writer</div>
-              <div className="chip c4"><i className="fas fa-chart-line" /> Digital Marketer</div>
+              <div className="chip c3"><i className="fas fa-chart-line" /> Digital Marketer</div>
+              <div className="chip c4"><i className="fas fa-pen" /> Writer</div>
+              <div className="chip c5"><i className="fas fa-pencil-ruler" /> UI/UX Designer</div>
             </div>
           </div>
         </div>
@@ -179,9 +180,10 @@ export default function About() {
         <div ref={textRef} className="about-text">
           <p className="section-eyebrow anim">About Me</p>
           <h2 className="section-title anim">Who Am I?</h2>
-          <p className="about-para anim">I'm a <span className="highlight">BCA 3rd year student</span> and <span className="highlight">Certified Digital Marketer</span> — two worlds that most people keep separate, but I live both at once.</p>
+          <p className="about-para anim">I'm a <span className="highlight">BCA 3rd year student</span>, <span className="highlight">Certified Digital Marketer</span> and <span className="highlight">Certified UI/UX Designer</span> — worlds that most people keep separate, but I live all at once.</p>
           <p className="about-para anim">In <span className="highlight">tech</span>, I build web applications and write clean code across C, C++, Java, Python and JavaScript. I love turning ideas into real products that people actually use.</p>
           <p className="about-para anim">In <span className="highlight">digital marketing</span>, I understand how brands grow online — SEO, social media strategy, content creation, audience targeting and online branding. I don't just build products, I know how to get them seen.</p>
+          <p className="about-para anim">In <span className="highlight">UI/UX design</span>, I craft interfaces that are intuitive, visually sharp and user-first — wireframes, prototypes, design systems and experiences that feel effortless to use.</p>
           <p className="about-para anim">And through it all, I write <span className="highlight">music lyrics</span> — storytelling is the thread that connects everything I do. <span className="highlight">Watch this space.</span></p>
           <div className="about-stats anim">
             <div className="stat">
