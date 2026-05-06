@@ -211,8 +211,8 @@ export default function Hero() {
           Turning lines of code into experiences. Building something the world hasn't seen yet.
         </p>
         <div ref={btnsRef} className="hero-btns">
-          <a href="#experience" className="btn btn-primary" data-cursor="EXPLORE">My Journey</a>
-          <a href="#about"      className="btn btn-outline"  data-cursor="EXPLORE">Know Me</a>
+          <a href="#experience" className="btn btn-primary">My Journey</a>
+          <a href="#about"      className="btn btn-outline">Know Me</a>
         </div>
       </div>
 

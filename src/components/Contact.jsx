@@ -227,7 +227,6 @@ export default function Contact() {
                   aria-label={label}
                   target="_blank"
                   rel="noreferrer"
-                  data-cursor={label.toUpperCase()}
                 >
                   <span className="csocial-icon"><Icon size={14} /></span>
                   <span>{label}</span>
