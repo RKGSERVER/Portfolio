@@ -380,3 +380,15 @@
   .proj-grid { grid-template-columns: 1fr; }
   .proj-title { font-size: 1.6rem; }
 }
+
+/* ── Responsive card buttons ── */
+@media (max-width: 480px) {
+  .proj-actions { gap: 8px; }
+  .proj-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 10px 14px;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+}
