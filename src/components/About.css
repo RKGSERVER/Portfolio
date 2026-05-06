@@ -286,37 +286,50 @@
 
 /* ── Personal Details ── */
 .about-personal {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
   margin-bottom: 28px;
-  padding: 20px 24px;
-  background: var(--card-bg);
   border: 1px solid var(--border2);
-  border-left: 3px solid var(--accent);
+  overflow: hidden;
 }
 .personal-item {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  border-right: 1px solid var(--border2);
+  position: relative;
+}
+.personal-item:last-child {
+  border-right: none;
+}
+.personal-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
 }
 .personal-label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--gray);
-  letter-spacing: 0.15em;
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  min-width: 110px;
-  flex-shrink: 0;
 }
 .personal-value {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-head);
+  font-size: 1.4rem;
   color: var(--white);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 640px) {
+  .about-personal { grid-template-columns: 1fr; }
+  .personal-item { border-right: none; border-bottom: 1px solid var(--border2); }
+  .personal-item:last-child { border-bottom: none; }
 }
 @media (max-width: 480px) {
-  .about-personal { padding: 16px; }
-  .personal-label { min-width: 90px; font-size: 0.65rem; }
-  .personal-value { font-size: 0.88rem; }
+  .personal-value { font-size: 1.2rem; }
 }
