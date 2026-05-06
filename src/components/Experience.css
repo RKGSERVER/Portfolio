@@ -316,48 +316,52 @@
   .achieve-grid { grid-template-columns: repeat(2, 1fr); }
   .lyrics-section { max-width: 100%; }
 }
+
+/* ── Tablet: hide right column, show left only ── */
 @media (max-width: 768px) {
   .timeline-spine { left: 16px; }
   .timeline-cats { grid-template-columns: 1fr; gap: 6px; margin-bottom: 20px; }
   .timeline-cat.right { justify-content: flex-start; }
   .tl-row { grid-template-columns: 28px 1fr; }
   .tl-card-wrap:not(.right) { order: 2; padding: 0 0 0 12px; }
-  .tl-card-wrap.right { order: 2; padding: 0 0 0 12px; }
-  .tl-card-wrap.empty { display: none; }
-  .tl-node { order: 1; }
+  .tl-card-wrap.right { display: none; }
   .tl-card-wrap::after { display: none; }
   .tech-grid { justify-content: center; }
 }
+
+/* ── Mobile: single column, all cards stacked ── */
 @media (max-width: 640px) {
+  .timeline-spine { display: none; }
+  .timeline-cats { display: none; }
+  .tl-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .tl-node { display: none; }
+  .tl-card-wrap { padding: 0; order: unset !important; display: block !important; }
+  .tl-card-wrap.empty { display: none !important; }
   .achieve-grid { grid-template-columns: 1fr; }
   .lyric-card { padding: 28px 18px; }
   .lyric-line { font-size: 0.82rem; line-height: 2; }
   .tech-grid { gap: 8px; justify-content: center; }
   .tech-item { width: 72px; padding: 12px 8px; }
 }
+
 @media (max-width: 480px) {
-  .tl-card { padding: 14px 14px; }
+  .exp-header { margin-bottom: 32px; }
+  .tl-card { padding: 14px 14px; margin-bottom: 10px; }
   .tl-card h3 { font-size: 0.9rem; }
   .tl-card p { font-size: 0.82rem; }
   .achieve-card { padding: 18px 14px; }
   .achieve-title { font-size: 0.95rem; }
+  .achievements-section { margin-top: 40px; }
+  .achieve-grid { grid-template-columns: 1fr; gap: 12px; }
   .tech-section { margin-top: 48px; }
   .tech-item { width: 68px; }
   .tech-icon-wrap { width: 30px; height: 30px; }
-}
-
-/* ── Extra mobile fixes ── */
-@media (max-width: 480px) {
-  .exp-header { margin-bottom: 32px; }
-  .timeline-spine { display: none; }
-  .tl-item { padding-left: 0 !important; }
-  .tl-dot { display: none; }
-  .tl-card { margin-bottom: 12px; }
-  .lyrics-section { padding: 0; }
   .lyric-card { padding: 20px 14px; }
   .lyric-line { font-size: 0.82rem; line-height: 2; }
-  .achievements-section { margin-top: 40px; }
-  .achieve-grid { grid-template-columns: 1fr; gap: 12px; }
-  .tech-grid { gap: 8px; justify-content: center; }
   .sub-section-header { margin-bottom: 28px; }
 }
