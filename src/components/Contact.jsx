@@ -90,19 +90,18 @@ export default function Contact() {
     })
   }, [])
 
-  /* ── form submit ── */
+  /* ── form submit via FormSubmit (direct POST) ── */
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus("sending")
     const data = new FormData(formRef.current)
     try {
-      const res = await fetch("https://formsubmit.co/ajax/rozario9913@gmail.com", {
+      const res = await fetch("https://formsubmit.co/rozario9913@gmail.com", {
         method: "POST",
         headers: { Accept: "application/json" },
         body: data,
       })
-      const json = await res.json()
-      if (json.success === "true" || json.success === true) {
+      if (res.ok || res.status === 200) {
         setStatus("sent")
         formRef.current.reset()
         setMsgLen(0)
