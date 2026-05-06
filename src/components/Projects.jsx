@@ -207,13 +207,6 @@ export default function Projects() {
                     cross-origin restrictions, or content protection set by the host platform.
                     Click <strong>Open in new tab</strong> to view the full live output.
                   </p>
-                  <a className="proj-blocked-btn" href={active.preview} target="_blank" rel="noreferrer">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"
-                        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    Open Live Project
-                  </a>
                 </div>
               ) : (
                 <div className="proj-win-blocked" key="github">
