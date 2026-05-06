@@ -135,7 +135,7 @@ export default function Contact() {
 
   return (
     <section ref={sectionRef} className="contact section" id="contact">
-      <div className="section-num">04</div>
+      <div className="section-num">05</div>
 
       {/* ambient orbs — no lines */}
       <div className="contact-orb contact-orb-1" aria-hidden="true" />

@@ -129,7 +129,7 @@ export default function Experience() {
 
   return (
     <section ref={sectionRef} className="experience section" id="experience">
-      <div className="section-num">03</div>
+      <div className="section-num">04</div>
 
       <div className="exp-header">
         <p className="section-eyebrow">My Journey</p>
