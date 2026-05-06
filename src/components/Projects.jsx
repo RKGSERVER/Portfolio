@@ -39,7 +39,7 @@ const projects = [
     title: 'Rainworld Website',
     tag: 'Full Stack',
     desc: 'An immersive rain-themed full stack website with animated effects, backend API, and atmospheric design.',
-    tech: ['React', 'Node.js', 'Express', 'MySQL', 'Bootstrap', 'JavaScript'],
+    tech: ['React', 'Node.js', 'Express', 'MySQL', 'Bootstrap', 'HTML', 'CSS', 'JavaScript'],
     color: '#00b0ff',
     preview: 'https://rkgserver.github.io/Rainworld/',
     github: 'https://github.com/RKGSERVER/Rainworld',
