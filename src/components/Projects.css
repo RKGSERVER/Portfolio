@@ -253,3 +253,90 @@
 @media (max-width: 480px) {
   .proj-title { font-size: 1.6rem; }
 }
+
+/* ── Blocked preview message ── */
+.proj-win-blocked {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 48px 32px;
+  text-align: center;
+  background: #080808;
+  position: relative;
+  overflow: hidden;
+  animation: blockedIn 0.5s var(--ease) forwards;
+}
+
+/* scanline bg */
+.proj-win-blocked::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(255,255,255,0.015) 3px,
+    rgba(255,255,255,0.015) 4px
+  );
+  pointer-events: none;
+}
+
+@keyframes blockedIn {
+  0%   { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+.proj-blocked-icon {
+  color: var(--proj-color, var(--accent));
+  opacity: 0.8;
+  animation: iconPulse 2.5s ease infinite;
+}
+@keyframes iconPulse {
+  0%,100% { filter: drop-shadow(0 0 6px var(--proj-color, var(--accent))); }
+  50%      { filter: drop-shadow(0 0 18px var(--proj-color, var(--accent))); }
+}
+
+.proj-blocked-title {
+  font-family: var(--font-head);
+  font-size: 1.8rem;
+  color: var(--white);
+  letter-spacing: 0.04em;
+}
+
+.proj-blocked-msg {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #999;
+  line-height: 1.8;
+  max-width: 480px;
+}
+.proj-blocked-msg strong { color: var(--accent); font-weight: 600; }
+
+.proj-blocked-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 12px 28px;
+  background: var(--proj-color, var(--accent));
+  color: #fff; text-decoration: none;
+  clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  position: relative; overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.3s;
+  margin-top: 8px;
+}
+.proj-blocked-btn::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s var(--ease);
+}
+.proj-blocked-btn:hover::before { left: 150%; }
+.proj-blocked-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--proj-color, var(--accent)) 40%, transparent);
+}
