@@ -125,7 +125,7 @@ export default function Projects() {
               {proj.tech.map(t => <span key={t} className="proj-tech-tag">{t}</span>)}
             </div>
             <div className="proj-actions">
-              <button className="proj-btn" onClick={() => openProject(proj)}>
+              <button className="proj-btn proj-btn-preview" onClick={() => openProject(proj)}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                   <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
                   <path d="M8 21h8M12 17v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
