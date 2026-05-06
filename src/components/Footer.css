@@ -81,27 +81,27 @@
   gap: 4px;
 }
 .footer-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0px;
+  display: inline-block;
   color: #999;
   text-decoration: none;
   font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 500;
   padding: 6px 0;
-  transition: color 0.3s, padding-left 0.3s;
+  position: relative;
+  transition: color 0.3s;
 }
-.footer-link:last-child { border-bottom: none; }
-.footer-link-arrow {
-  color: var(--accent);
-  font-size: 0.85rem;
-  opacity: 0;
-  margin-right: 0;
-  transition: opacity 0.3s, margin-right 0.3s;
+/* animated underline — slides in from left */
+.footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width 0.35s var(--ease);
 }
-.footer-link:hover { color: var(--white); padding-left: 8px; }
-.footer-link:hover .footer-link-arrow { opacity: 1; margin-right: 6px; }
+.footer-link:hover { color: var(--white); }
+.footer-link:hover::after { width: 100%; }
 
 /* ── col 3 socials ── */
 .footer-socials-grid {

@@ -433,7 +433,6 @@ export default function Footer() {
             {quickLinks.map(({ label, href }) => (
               <li key={label}>
                 <a href={href} className="footer-link">
-                  <span className="footer-link-arrow">→</span>
                   {label}
                 </a>
               </li>
