@@ -180,6 +180,29 @@ export default function About() {
         <div ref={textRef} className="about-text">
           <p className="section-eyebrow anim">About Me</p>
           <h2 className="section-title anim">Who Am I?</h2>
+
+          {/* ── Personal Details ── */}
+          <div className="about-personal anim">
+            <div className="personal-item">
+              <span className="personal-label">Name</span>
+              <span className="personal-value">Rozario Rajkumar</span>
+            </div>
+            <div className="personal-item">
+              <span className="personal-label">Date of Birth</span>
+              <span className="personal-value">07 October 2004</span>
+            </div>
+            <div className="personal-item">
+              <span className="personal-label">Age</span>
+              <span className="personal-value">{(() => {
+                const dob = new Date('2004-10-07')
+                const today = new Date()
+                let age = today.getFullYear() - dob.getFullYear()
+                const m = today.getMonth() - dob.getMonth()
+                if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--
+                return age
+              })()} years old</span>
+            </div>
+          </div>
           <p className="about-para anim">I'm a <span className="highlight">BCA 3rd year student</span>, <span className="highlight">Certified Digital Marketer</span> and <span className="highlight">Certified UI/UX Designer</span> — worlds that most people keep separate, but I live all at once.</p>
           <p className="about-para anim">In <span className="highlight">tech</span>, I build web applications and write clean code across C, C++, Java, Python and JavaScript. I love turning ideas into real products that people actually use.</p>
           <p className="about-para anim">In <span className="highlight">digital marketing</span>, I understand how brands grow online — SEO, social media strategy, content creation, audience targeting and online branding. I don't just build products, I know how to get them seen.</p>
