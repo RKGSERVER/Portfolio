@@ -130,13 +130,13 @@
   backdrop-filter: blur(8px);
   z-index: 9000;
   display: flex; align-items: center; justify-content: center;
-  padding: 24px;
+  padding: 12px;
 }
 
 /* ── Window ── */
 .proj-win {
-  width: min(860px, 92vw);
-  max-height: 88vh;
+  width: min(860px, 96vw);
+  max-height: 92vh;
   background: #0c0c0c;
   border: 1px solid rgba(255,255,255,0.1);
   display: flex; flex-direction: column;
@@ -145,8 +145,31 @@
   transition: width 0.35s var(--ease), max-height 0.35s var(--ease);
 }
 .proj-win-big {
-  width: 96vw !important;
-  max-height: 94vh !important;
+  width: 98vw !important;
+  max-height: 96vh !important;
+}
+
+/* ── Tablet ── */
+@media (max-width: 768px) {
+  .proj-overlay { padding: 8px; }
+  .proj-win { width: 98vw; max-height: 94vh; }
+  .proj-win-big { width: 100vw !important; max-height: 100vh !important; }
+  .proj-win-title { font-size: 0.85rem; }
+}
+
+/* ── Mobile — slides up from bottom ── */
+@media (max-width: 480px) {
+  .proj-overlay { padding: 0; align-items: flex-end; }
+  .proj-win {
+    width: 100vw;
+    max-height: 88vh;
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+  }
+  .proj-win-big { max-height: 100vh !important; border-radius: 0 !important; }
+  .proj-win-bar { padding: 12px 14px; }
+  .proj-win-title { font-size: 0.82rem; }
+  .proj-win-resize, .proj-win-newtab { width: 30px; height: 30px; }
 }
 
 /* glitch animations */
@@ -339,4 +362,21 @@
 .proj-blocked-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px color-mix(in srgb, var(--proj-color, var(--accent)) 40%, transparent);
+}
+
+/* ── Responsive blocked message ── */
+@media (max-width: 768px) {
+  .proj-blocked-title { font-size: 1.4rem; }
+  .proj-blocked-msg { font-size: 0.88rem; }
+  .proj-win-blocked { padding: 32px 20px; }
+}
+@media (max-width: 480px) {
+  .proj-blocked-icon svg { width: 36px; height: 36px; }
+  .proj-blocked-title { font-size: 1.2rem; }
+  .proj-blocked-msg { font-size: 0.84rem; line-height: 1.7; }
+  .proj-win-blocked { padding: 28px 16px; gap: 14px; min-height: 220px; }
+  .proj-win-footer { padding: 8px 12px; flex-wrap: wrap; }
+  .proj-win-tech span { font-size: 0.58rem; }
+  .proj-grid { grid-template-columns: 1fr; }
+  .proj-title { font-size: 1.6rem; }
 }
